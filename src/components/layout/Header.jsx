@@ -92,3 +92,4 @@ export default function Header({ onMenuClick, onRecordSaleClick, onRestockClick 
     </header>
   );
 }
+

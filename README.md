@@ -93,3 +93,4 @@ npm run build
 - `GET /api/curse` & `POST /api/curse/toggle` — Midnight Curse surge toggle & multiplier.
 - `GET /api/settings` & `PUT /api/settings` — Sanctum parameters.
 - `POST /api/settings/reset` — Restore primordial Hack-O-Lantern 2026 data.
+

@@ -308,3 +308,4 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
     </Modal>
   );
 }
+

@@ -114,3 +114,4 @@ export default function DemandForecastChart({ data = [], height = 320 }) {
     </div>
   );
 }
+

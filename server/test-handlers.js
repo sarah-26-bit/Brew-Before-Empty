@@ -20,3 +20,4 @@ for (const req of potion.recipe) {
 }
 
 console.log('Alchemical Logic Verified Successfully! ✨');
+

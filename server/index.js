@@ -729,3 +729,4 @@ app.listen(PORT, () => {
   console.log(`✨ SPELLSTOCK Backend running on http://localhost:${PORT}`);
   console.log(`🔮 Alchemical endpoints active and bound to astral plane.`);
 });
+

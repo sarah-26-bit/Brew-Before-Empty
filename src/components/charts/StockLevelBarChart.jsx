@@ -91,3 +91,4 @@ export default function StockLevelBarChart({ data = [], height = 300 }) {
     </div>
   );
 }
+

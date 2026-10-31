@@ -73,3 +73,4 @@ export default function CategoryBreakdownChart({ data = [], height = 280 }) {
     </div>
   );
 }
+

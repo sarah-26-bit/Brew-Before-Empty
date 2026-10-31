@@ -46,3 +46,4 @@ export default function ErrorBanner({
     </div>
   );
 }
+

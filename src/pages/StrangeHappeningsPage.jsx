@@ -399,3 +399,4 @@ export default function StrangeHappeningsPage() {
     </div>
   );
 }
+

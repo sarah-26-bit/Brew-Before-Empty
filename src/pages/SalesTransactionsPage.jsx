@@ -220,3 +220,4 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
     </div>
   );
 }
+

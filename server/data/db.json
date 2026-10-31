@@ -4,7 +4,7 @@
       "id": "ing-1",
       "name": "Dragon Scale Powder",
       "category": "Mineral & Scales",
-      "currentStock": 100,
+      "currentStock": 155,
       "unit": "drams",
       "minThreshold": 50,
       "costPerUnit": 85,
@@ -13,13 +13,13 @@
       "rarity": "Legendary",
       "dailyConsumption": 6.2,
       "leadTimeDays": 5,
-      "lastUpdated": "2026-10-31T20:30:00Z"
+      "lastUpdated": "2026-10-31T17:57:12.431Z"
     },
     {
       "id": "ing-2",
       "name": "Moonlit Dewdrops",
       "category": "Celestial Liquids",
-      "currentStock": 168,
+      "currentStock": 164,
       "unit": "fl. oz",
       "minThreshold": 60,
       "costPerUnit": 14.5,
@@ -28,13 +28,13 @@
       "rarity": "Uncommon",
       "dailyConsumption": 12,
       "leadTimeDays": 2,
-      "lastUpdated": "2026-10-31T19:15:00Z"
+      "lastUpdated": "2026-10-31T17:57:02.166Z"
     },
     {
       "id": "ing-3",
       "name": "Phoenix Feather Ash",
       "category": "Ethereal Ash",
-      "currentStock": 60,
+      "currentStock": 107,
       "unit": "pinches",
       "minThreshold": 30,
       "costPerUnit": 140,
@@ -43,13 +43,13 @@
       "rarity": "Mythic",
       "dailyConsumption": 3.8,
       "leadTimeDays": 7,
-      "lastUpdated": "2026-10-31T21:45:00Z"
+      "lastUpdated": "2026-10-31T17:57:12.431Z"
     },
     {
       "id": "ing-4",
       "name": "Mandragora Root Essence",
       "category": "Botanical Extracts",
-      "currentStock": 95,
+      "currentStock": 109,
       "unit": "vials",
       "minThreshold": 40,
       "costPerUnit": 32,
@@ -58,13 +58,13 @@
       "rarity": "Rare",
       "dailyConsumption": 5.5,
       "leadTimeDays": 3,
-      "lastUpdated": "2026-10-31T18:00:00Z"
+      "lastUpdated": "2026-10-31T17:57:12.431Z"
     },
     {
       "id": "ing-5",
       "name": "Abyssal Pearl Dust",
       "category": "Mineral & Scales",
-      "currentStock": 70,
+      "currentStock": 114,
       "unit": "drams",
       "minThreshold": 35,
       "costPerUnit": 115,
@@ -73,7 +73,7 @@
       "rarity": "Rare",
       "dailyConsumption": 4.1,
       "leadTimeDays": 6,
-      "lastUpdated": "2026-10-31T22:10:00Z"
+      "lastUpdated": "2026-10-31T17:57:12.431Z"
     },
     {
       "id": "ing-6",
@@ -94,7 +94,7 @@
       "id": "ing-7",
       "name": "Ectoplasmic Resin",
       "category": "Ethereal Ash",
-      "currentStock": 90,
+      "currentStock": 138,
       "unit": "fl. oz",
       "minThreshold": 45,
       "costPerUnit": 65,
@@ -103,13 +103,13 @@
       "rarity": "Rare",
       "dailyConsumption": 6.8,
       "leadTimeDays": 4,
-      "lastUpdated": "2026-10-31T22:50:00Z"
+      "lastUpdated": "2026-10-31T17:57:12.431Z"
     },
     {
       "id": "ing-8",
       "name": "Starlight Nectar",
       "category": "Celestial Liquids",
-      "currentStock": 134,
+      "currentStock": 153,
       "unit": "fl. oz",
       "minThreshold": 50,
       "costPerUnit": 48,
@@ -118,7 +118,7 @@
       "rarity": "Legendary",
       "dailyConsumption": 7.5,
       "leadTimeDays": 4,
-      "lastUpdated": "2026-10-31T16:20:00Z"
+      "lastUpdated": "2026-10-31T17:57:12.431Z"
     }
   ],
   "potions": [
@@ -220,6 +220,33 @@
     }
   ],
   "sales": [
+    {
+      "id": "TXN-5259",
+      "timestamp": "2026-10-31T17:57:02.166Z",
+      "potionId": "pot-1",
+      "potionName": "Elixir of Astral Clarity",
+      "quantity": 1,
+      "totalGold": 380,
+      "customer": "Anonymous Sorcerer",
+      "guild": "Independent Order",
+      "ingredientsDeducted": [
+        {
+          "ingredientName": "Moonlit Dewdrops",
+          "amount": 4,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredientName": "Starlight Nectar",
+          "amount": 2,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredientName": "Dragon Scale Powder",
+          "amount": 1,
+          "unit": "drams"
+        }
+      ]
+    },
     {
       "id": "TXN-8842",
       "timestamp": "2026-10-31T22:15:00Z",
@@ -342,8 +369,10 @@
       "detectedAt": "2026-10-31T19:30:00Z",
       "description": "Current stock is 42 drams against minimum safe threshold of 50 drams. Supplier delayed due to mountain blizzard.",
       "anomalyType": "Stockout Risk",
-      "status": "ACTIVE",
-      "recommendedAction": "Invoke emergency courier or allocate available powder to high-margin clarities."
+      "status": "RESOLVED",
+      "recommendedAction": "Invoke emergency courier or allocate available powder to high-margin clarities.",
+      "resolvedAt": "2026-10-31T17:56:02.694Z",
+      "resolutionNote": "Purification ward applied by the Grand Magister."
     },
     {
       "id": "anom-3",
