@@ -79,7 +79,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name.trim()) {
-      setError('Please provide a name for the reagent.');
+      setError('Please provide a name for this ingredient.');
       return;
     }
 
@@ -89,15 +89,15 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
     try {
       if (ingredientToEdit) {
         await api.updateIngredient(ingredientToEdit.id, formData);
-        showToast(`Reagent ${formData.name} updated successfully!`, 'success');
+        showToast(`Ingredient "${formData.name}" updated successfully!`, 'success');
       } else {
         await api.addIngredient(formData);
-        showToast(`New reagent ${formData.name} inscribed into the Pantry!`, 'success');
+        showToast(`Ingredient "${formData.name}" added to inventory!`, 'success');
       }
       triggerGlobalRefresh();
       onClose();
     } catch (err) {
-      const msg = err.response?.data?.error || 'Failed to save reagent to the database.';
+      const msg = err.response?.data?.error || 'Failed to save ingredient to database.';
       setError(msg);
     } finally {
       setLoading(false);
@@ -108,8 +108,8 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={ingredientToEdit ? 'Refine Reagent Inscription' : 'Inscribe New Reagent'}
-      subtitle={ingredientToEdit ? `Updating properties for ${ingredientToEdit.name}` : 'Add a new element to the SPELLSTOCK inventory'}
+      title={ingredientToEdit ? 'Edit Ingredient' : 'Add New Ingredient'}
+      subtitle={ingredientToEdit ? `Updating stock levels and details for ${ingredientToEdit.name}` : 'Enter the ingredient details below to add it to your pantry'}
       maxWidth="max-w-2xl"
     >
       {error && (
@@ -124,7 +124,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Reagent Name *
+              Ingredient Name *
             </label>
             <input
               type="text"
@@ -132,13 +132,13 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
               required
               value={formData.name}
               onChange={handleChange}
-              placeholder="e.g. Spectral Lotus Petals"
+              placeholder="e.g. Moonlit Dewdrops"
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
             />
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Reagent Category
+              Category
             </label>
             <select
               name="category"
@@ -172,20 +172,20 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Unit Measure
+              Unit of Measure
             </label>
             <input
               type="text"
               name="unit"
               value={formData.unit}
               onChange={handleChange}
-              placeholder="drams, vials, grams"
+              placeholder="drams, vials, grams, fl. oz"
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
             />
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Min Threshold
+              Min Stock (Reorder Point)
             </label>
             <input
               type="number"
@@ -202,7 +202,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Cost / Unit (⟡)
+              Cost per Unit (⟡)
             </label>
             <input
               type="number"
@@ -216,7 +216,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Daily Burn Rate
+              Daily Usage (Avg/Day)
             </label>
             <input
               type="number"
@@ -230,7 +230,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Lead Time (Days)
+              Delivery Time (Days)
             </label>
             <input
               type="number"
@@ -247,7 +247,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
         <div className="grid grid-cols-3 gap-3">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Guild / Supplier
+              Supplier Name
             </label>
             <input
               type="text"
@@ -266,13 +266,13 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
               name="purity"
               value={formData.purity}
               onChange={handleChange}
-              placeholder="99.5%"
+              placeholder="e.g. 98.5%"
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3 py-2 text-sm text-moonlight font-mono focus:border-arcane focus:outline-none"
             />
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Arcane Rarity
+              Item Rarity
             </label>
             <select
               name="rarity"
@@ -301,11 +301,10 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
             isLoading={loading}
             icon={Sparkles}
           >
-            {ingredientToEdit ? 'Save Inscription' : 'Inscribe Reagent'}
+            {ingredientToEdit ? 'Save Changes' : 'Add Ingredient'}
           </Button>
         </div>
       </form>
     </Modal>
   );
 }
-

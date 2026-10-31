@@ -45,7 +45,7 @@ export default function SettingsPage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Unable to load Sanctum settings from the backend.'
+        'Unable to load store settings from the backend.'
       );
     } finally {
       setLoading(false);
@@ -61,7 +61,7 @@ export default function SettingsPage() {
     setSaving(true);
     try {
       await api.updateSettings(settings);
-      showToast('Sanctum settings inscribed to astral memory.', 'success');
+      showToast('Store settings saved successfully!', 'success');
       triggerGlobalRefresh();
     } catch (err) {
       showToast('Failed to save settings.', 'error');
@@ -73,7 +73,7 @@ export default function SettingsPage() {
   const handleReset = async () => {
     if (
       !window.confirm(
-        'WARNING: Rejuvenating primordial state will purge all recent sales, custom reagents, and restore Hack-O-Lantern 2026 default inventory. Proceed?'
+        'WARNING: Resetting to demo data will clear custom sales and restore default Hack-O-Lantern 2026 inventory. Proceed?'
       )
     ) {
       return;
@@ -82,10 +82,10 @@ export default function SettingsPage() {
     setResetting(true);
     try {
       await api.resetDatabase();
-      showToast('Sanctuary inventory restored to pristine primordial state!', 'success');
+      showToast('Inventory reset to default demo dataset!', 'success');
       triggerGlobalRefresh();
     } catch (err) {
-      showToast('Failed to reset sanctuary state.', 'error');
+      showToast('Failed to reset store data.', 'error');
     } finally {
       setResetting(false);
     }
@@ -99,15 +99,15 @@ export default function SettingsPage() {
         <ErrorBanner message={error} onRetry={fetchSettings} />
       ) : (
         <form onSubmit={handleSave} className="space-y-6">
-          {/* General Alchemical Parameters */}
+          {/* General Store Parameters */}
           <Card
-            title="Sanctum Identity & Governance"
-            subtitle="Configure display appellations, titles, and legal currency representation"
+            title="Store Information & Branding"
+            subtitle="Configure your shop display name, store manager, and currency representation"
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-                  Establishment Name
+                  Shop / Store Name
                 </label>
                 <input
                   type="text"
@@ -119,7 +119,7 @@ export default function SettingsPage() {
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-                  Alchemist In Charge
+                  Store Manager / Head Alchemist
                 </label>
                 <input
                   type="text"
@@ -131,7 +131,7 @@ export default function SettingsPage() {
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-                  Standard Currency Rune
+                  Currency Symbol
                 </label>
                 <input
                   type="text"
@@ -143,7 +143,7 @@ export default function SettingsPage() {
 
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-                  Prophecy Forecast Horizon (Days)
+                  Demand Forecast Window (Days)
                 </label>
                 <input
                   type="number"
@@ -159,17 +159,17 @@ export default function SettingsPage() {
 
           {/* Thresholds and Automation */}
           <Card
-            title="Warning Thresholds & Autonomous Protocols"
-            subtitle="Configure proactive alerting trigger points"
+            title="Alert Settings & Audio"
+            subtitle="Configure proactive alerts and notification preferences"
           >
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3.5 rounded-xl bg-midnight-card/50 border border-midnight-border/60">
                 <div>
                   <span className="font-semibold text-sm text-moonlight block">
-                    Automatic Warding Defense
+                    Automatic Alert Resolution
                   </span>
                   <span className="text-xs text-moonlight-muted">
-                    Automatically etch seals when spectral leakage exceeds 300% burn rate
+                    Automatically resolve low-stock alerts once ingredients have been restocked
                   </span>
                 </div>
                 <input
@@ -183,10 +183,10 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between p-3.5 rounded-xl bg-midnight-card/50 border border-midnight-border/60">
                 <div>
                   <span className="font-semibold text-sm text-moonlight block">
-                    Aetheric Sound Resonances
+                    Sound Effects & Chimes
                   </span>
                   <span className="text-xs text-moonlight-muted">
-                    Play harmonic bells upon successful restock spells and sales
+                    Play cheerful chimes upon successful restock orders and completed customer sales
                   </span>
                 </div>
                 <input
@@ -208,7 +208,7 @@ export default function SettingsPage() {
               icon={Save}
               isLoading={saving}
             >
-              Commit Sanctum Configurations
+              Save Store Settings
             </Button>
           </div>
 
@@ -217,11 +217,11 @@ export default function SettingsPage() {
             <div className="flex items-center gap-3">
               <ShieldAlert className="w-5 h-5 text-curse shrink-0" />
               <h4 className="font-display font-bold text-base text-curse-light">
-                Primordial Rejuvenation (Database Reset)
+                Reset to Demo Data (Restore Defaults)
               </h4>
             </div>
             <p className="text-xs text-moonlight-muted leading-relaxed">
-              Reset all inventory counts, restock logs, custom transactions, and active anomalies back to the default Hack-O-Lantern 2026 baseline dataset.
+              Reset all inventory counts, restock logs, and sales records back to the clean Hack-O-Lantern 2026 starter dataset.
             </p>
             <Button
               type="button"
@@ -231,7 +231,7 @@ export default function SettingsPage() {
               isLoading={resetting}
               onClick={handleReset}
             >
-              Restore Pristine Primordial State
+              Reset All Data to Demo Baseline
             </Button>
           </div>
         </form>
@@ -239,4 +239,3 @@ export default function SettingsPage() {
     </div>
   );
 }
-

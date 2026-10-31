@@ -23,10 +23,10 @@ import {
 } from 'lucide-react';
 
 const SPIKE_PRESETS = [
-  { id: 'BLOOD_MOON', label: 'Blood Moon Surge', mult: 1.85, desc: 'Heightened vampiric & martial demand' },
-  { id: 'WITCHES_EVE', label: "Witches' Eve", mult: 2.4, desc: 'Massive festive ritual consumption' },
-  { id: 'SOLSTICE', label: 'Celestial Solstice', mult: 1.5, desc: 'Astral alignments accelerate clarity philters' },
-  { id: 'NECROTIC_SURGE', label: 'Necrotic Plague Surge', mult: 3.1, desc: 'Emergency purification & antidote rush' },
+  { id: 'BLOOD_MOON', label: 'Blood Moon Surge', mult: 1.85, desc: 'Heavy customer traffic (+85% demand)' },
+  { id: 'WITCHES_EVE', label: "Witches' Eve Festival", mult: 2.4, desc: 'Massive holiday & party rush (+140% demand)' },
+  { id: 'SOLSTICE', label: 'Weekend Solstice', mult: 1.5, desc: 'Moderate weekend surge (+50% demand)' },
+  { id: 'NECROTIC_SURGE', label: 'Emergency Remedy Run', mult: 3.1, desc: 'Sudden urgent demand (+210% surge)' },
 ];
 
 export default function ProphecyAIPage({ onOpenRestock }) {
@@ -50,7 +50,7 @@ export default function ProphecyAIPage({ onOpenRestock }) {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'The Prophecy AI Oracle could not divine future trends from the backend.'
+        'Could not load demand forecasts from the backend server.'
       );
     } finally {
       setLoading(false);
@@ -69,9 +69,9 @@ export default function ProphecyAIPage({ onOpenRestock }) {
         multiplier: mult,
       });
       setSimulationResult(res.data);
-      showToast(`Prophecy AI simulated ${presetId} with ${mult}x velocity!`, 'warning');
+      showToast(`Simulated ${presetId} surge at ${mult}x normal customer demand!`, 'warning');
     } catch (err) {
-      showToast('Failed to simulate seasonal spike.', 'error');
+      showToast('Failed to simulate demand spike.', 'error');
     } finally {
       setSimulating(false);
     }
@@ -93,11 +93,11 @@ export default function ProphecyAIPage({ onOpenRestock }) {
           </div>
           <div>
             <h3 className="font-display font-bold text-lg text-moonlight flex items-center gap-2">
-              <span>Prophecy AI — Predictive Oracle Engine</span>
+              <span>Prophecy AI — Demand Forecasting & Planning</span>
               <Badge variant="arcane" size="sm">Active Model v4.2</Badge>
             </h3>
             <p className="text-xs text-moonlight-muted mt-1 max-w-xl">
-              Simulating 14-day arcane demand curves, continuous reagent depletion velocity, and calculating exact stockout hazard dates.
+              Analyzes historical usage to predict how many ingredients you will need over the next 14 days and warns you before you run out.
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function ProphecyAIPage({ onOpenRestock }) {
           isLoading={simulating}
           onClick={() => handleSimulateSpike()}
         >
-          Run Seasonal Surge Simulation
+          Simulate Demand Spike
         </Button>
       </div>
 
@@ -121,8 +121,8 @@ export default function ProphecyAIPage({ onOpenRestock }) {
         <>
           {/* Demand Forecast Chart */}
           <Card
-            title="14-Day Demand Forecast & Upper Hazard Horizon"
-            subtitle="Comparing logged historical sales with neural projected demand (dashed) and confidence envelopes"
+            title="14-Day Demand Forecast & Upper Planning Range"
+            subtitle="Comparing past actual customer sales with projected future demand (dashed line) and safety ranges"
           >
             <DemandForecastChart data={prophecyData?.forecastTimeline || []} height={340} />
           </Card>
@@ -130,7 +130,7 @@ export default function ProphecyAIPage({ onOpenRestock }) {
           {/* SEASONAL DEMAND SPIKES SIMULATOR WIDGET */}
           <Card
             title="Simulate Seasonal Demand Spikes"
-            subtitle="Test how celestial and calendar events accelerate inventory depletion across your pantry"
+            subtitle="Test how holiday rushes and seasonal festivals accelerate ingredient depletion so you can prepare early"
             glow
             glowColor="potion"
           >
@@ -154,7 +154,7 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                           {preset.label}
                         </span>
                         <Badge variant={isSelected ? 'potion' : 'default'} size="sm">
-                          {preset.mult}x
+                          {preset.mult}x Demand
                         </Badge>
                       </div>
                       <p className="text-[11px] text-moonlight-muted leading-relaxed">
@@ -171,10 +171,10 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                   <Flame className="w-5 h-5 text-potion" />
                   <div>
                     <span className="text-xs font-semibold uppercase tracking-wider text-moonlight">
-                      Custom Surge Multiplier:
+                      Custom Demand Multiplier:
                     </span>
                     <span className="ml-2 font-mono font-bold text-potion-light text-sm">
-                      {customMultiplier}x
+                      {customMultiplier}x normal rate
                     </span>
                   </div>
                 </div>
@@ -195,7 +195,7 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                     isLoading={simulating}
                     onClick={() => handleSimulateSpike(selectedSpike, customMultiplier)}
                   >
-                    Simulate
+                    Run Simulation
                   </Button>
                 </div>
               </div>
@@ -206,10 +206,10 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="font-display font-bold text-sm text-potion-light flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 text-potion" />
-                      <span>Surge Depletion Hazard Analysis: {simulationResult.spikeType} ({simulationResult.multiplier}x)</span>
+                      <span>Impact Analysis: {simulationResult.spikeType} ({simulationResult.multiplier}x customer demand)</span>
                     </h4>
                     <span className="text-xs font-mono text-moonlight-muted">
-                      {simulationResult.impactSummary}
+                      Shows which items will run out earlier during this spike.
                     </span>
                   </div>
 
@@ -217,12 +217,12 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                     <table className="w-full text-left text-xs">
                       <thead className="bg-midnight-card/80 text-moonlight-muted font-mono uppercase tracking-wider">
                         <tr>
-                          <th className="py-2.5 px-3">Reagent</th>
-                          <th className="py-2.5 px-3">Stock Level</th>
-                          <th className="py-2.5 px-3">Standard Days</th>
-                          <th className="py-2.5 px-3">Surge Days Remaining</th>
-                          <th className="py-2.5 px-3">Days Lost to Surge</th>
-                          <th className="py-2.5 px-3">Accelerated Stockout</th>
+                          <th className="py-2.5 px-3">Ingredient</th>
+                          <th className="py-2.5 px-3">Current Stock</th>
+                          <th className="py-2.5 px-3">Normal Days Left</th>
+                          <th className="py-2.5 px-3">Days Left During Rush</th>
+                          <th className="py-2.5 px-3">Days of Stock Lost</th>
+                          <th className="py-2.5 px-3">New Stockout Date</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-midnight-border/40 font-mono">
@@ -239,11 +239,11 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                             </td>
                             <td className="py-2.5 px-3">
                               <span className={`font-bold ${item.acceleratedDaysRemaining <= 3 ? 'text-curse' : 'text-potion-light'}`}>
-                                {item.acceleratedDaysRemaining} days
+                                {item.acceleratedDaysRemaining} days left
                               </span>
                             </td>
                             <td className="py-2.5 px-3 text-curse-light font-bold">
-                              -{item.daysLost} days
+                              -{item.daysLost} days lost
                             </td>
                             <td className="py-2.5 px-3">
                               <span className={item.acceleratedDaysRemaining <= 3 ? 'text-curse font-bold' : 'text-moonlight'}>
@@ -262,15 +262,15 @@ export default function ProphecyAIPage({ onOpenRestock }) {
 
           {/* STOCKOUT DATES TABLE */}
           <Card
-            title="Predicted Reagent Stockout Dates"
-            subtitle="Continuous depletion tracking based on current burn rate & supply chain lead times"
+            title="Predicted Stockout Dates for All Ingredients"
+            subtitle="Tracks how quickly each item is being consumed and calculates the exact date it will run out"
             action={
               <Button
                 variant="primary"
                 size="sm"
                 onClick={onOpenRestock}
               >
-                Restock At-Risk Reagents
+                Restock Low Ingredients
               </Button>
             }
           >
@@ -278,12 +278,12 @@ export default function ProphecyAIPage({ onOpenRestock }) {
               <table className="w-full text-left text-xs">
                 <thead className="border-b border-midnight-border/70 text-moonlight-muted font-mono uppercase tracking-wider">
                   <tr>
-                    <th className="pb-3 font-semibold">Reagent</th>
+                    <th className="pb-3 font-semibold">Ingredient</th>
                     <th className="pb-3 font-semibold">Category</th>
                     <th className="pb-3 font-semibold">Current Stock</th>
-                    <th className="pb-3 font-semibold">Daily Velocity</th>
-                    <th className="pb-3 font-semibold">Stockout Horizon</th>
-                    <th className="pb-3 font-semibold">Hazard Level</th>
+                    <th className="pb-3 font-semibold">Average Daily Usage</th>
+                    <th className="pb-3 font-semibold">Days Left & Estimated Runout Date</th>
+                    <th className="pb-3 font-semibold">Risk Level</th>
                     <th className="pb-3 font-semibold">Recommended Safety Buffer</th>
                   </tr>
                 </thead>
@@ -304,10 +304,10 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                       </td>
                       <td className="py-3.5 font-mono">
                         <span className={`font-semibold ${risk.daysRemaining <= 3 ? 'text-curse-light font-bold' : 'text-moonlight'}`}>
-                          {risk.daysRemaining} days
+                          {risk.daysRemaining} days left
                         </span>
                         <span className="block text-[10px] text-moonlight-muted">
-                          {risk.stockoutDate}
+                          Runs out: {risk.stockoutDate}
                         </span>
                       </td>
                       <td className="py-3.5">
@@ -321,11 +321,11 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                           }
                           size="sm"
                         >
-                          {risk.riskLevel} RISK
+                          {risk.riskLevel === 'CRITICAL' ? 'CRITICAL RISK' : risk.riskLevel === 'HIGH' ? 'HIGH RISK' : 'LOW RISK'}
                         </Badge>
                       </td>
                       <td className="py-3.5 font-mono text-moonlight-muted">
-                        +{risk.recommendedBuffer} {risk.unit}
+                        +{risk.recommendedBuffer} {risk.unit} buffer
                       </td>
                     </tr>
                   ))}
@@ -355,7 +355,7 @@ export default function ProphecyAIPage({ onOpenRestock }) {
                     }
                     size="sm"
                   >
-                    {insight.urgency}
+                    {insight.urgency === 'HIGH' ? 'URGENT' : insight.urgency === 'POSITIVE' ? 'TIP' : 'NOTICE'}
                   </Badge>
                 </div>
                 <p className="text-xs text-moonlight-muted leading-relaxed">
@@ -369,4 +369,3 @@ export default function ProphecyAIPage({ onOpenRestock }) {
     </div>
   );
 }
-

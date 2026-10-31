@@ -66,3 +66,4 @@ const stockMovementSchema = new mongoose.Schema(
 stockMovementSchema.index({ ingredient: 1, timestamp: -1 });
 
 export const StockMovement = mongoose.model('StockMovement', stockMovementSchema);
+

@@ -82,3 +82,4 @@ export function validateSeasonalEvent(req, res, next) {
 
   next();
 }
+

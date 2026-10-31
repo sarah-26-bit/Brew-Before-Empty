@@ -62,3 +62,4 @@ const potionSchema = new mongoose.Schema(
 );
 
 export const Potion = mongoose.model('Potion', potionSchema);
+

@@ -143,3 +143,4 @@ export class IngredientService {
     return Ingredient.distinct('category');
   }
 }
+

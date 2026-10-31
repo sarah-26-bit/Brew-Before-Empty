@@ -81,3 +81,4 @@ const anomalySchema = new mongoose.Schema(
 );
 
 export const Anomaly = mongoose.model('Anomaly', anomalySchema);
+

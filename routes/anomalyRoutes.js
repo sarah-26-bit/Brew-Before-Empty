@@ -7,3 +7,4 @@ router.get('/', AnomalyController.getAnomalies);
 router.post('/:id/resolve', AnomalyController.resolve);
 
 export default router;
+

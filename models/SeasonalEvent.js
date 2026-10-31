@@ -62,3 +62,4 @@ seasonalEventSchema.methods.isCurrentlyActive = function () {
 };
 
 export const SeasonalEvent = mongoose.model('SeasonalEvent', seasonalEventSchema);
+

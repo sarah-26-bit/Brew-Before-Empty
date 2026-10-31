@@ -4,8 +4,8 @@ import Button from './Button';
 
 export default function EmptyState({
   icon: Icon = Sparkles,
-  title = 'No Magical Essence Found',
-  description = 'The ethereal registers are currently quiet. Cast a spell or add items to initiate activity.',
+  title = 'No Items Found',
+  description = 'No records to display yet. Add new items or record activity to get started.',
   actionLabel,
   onAction,
   className = '',
@@ -29,4 +29,3 @@ export default function EmptyState({
     </div>
   );
 }
-

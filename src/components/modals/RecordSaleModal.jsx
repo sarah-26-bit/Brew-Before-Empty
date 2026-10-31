@@ -51,15 +51,15 @@ export default function RecordSaleModal({ isOpen, onClose }) {
       const res = await api.recordSale({
         potionId: selectedPotionId,
         quantity: Number(quantity),
-        customer: customer || 'Anonymous Sorcerer',
-        guild: guild || 'Independent Order',
+        customer: customer || 'Anonymous Customer',
+        guild: guild || 'Direct Customer',
       });
 
-      showToast(`Sale recorded! Stock automatically deducted for ${selectedPotion.name}.`, 'success');
+      showToast(`Sale completed! Deducted ingredients for ${quantity}x ${selectedPotion.name}.`, 'success');
       triggerGlobalRefresh();
       onClose();
     } catch (err) {
-      const errMsg = err.response?.data?.error || 'Failed to record sale & deduct stock.';
+      const errMsg = err.response?.data?.error || 'Failed to record sale. Insufficient ingredients in stock.';
       setError(errMsg);
     } finally {
       setLoading(false);
@@ -70,8 +70,8 @@ export default function RecordSaleModal({ isOpen, onClose }) {
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Record Potion Dispensation"
-      subtitle="Register sale and automatically deduct recipe reagents from stock."
+      title="Record Customer Sale"
+      subtitle="Select a potion to sell. Required ingredients will be deducted from your inventory automatically."
     >
       {error && (
         <div className="mb-4 p-3.5 rounded-xl bg-curse/15 border border-curse/40 text-curse-light text-xs flex items-center gap-2">
@@ -84,7 +84,7 @@ export default function RecordSaleModal({ isOpen, onClose }) {
         {/* Potion Selector */}
         <div>
           <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-            Select Brew or Elixir
+            Select Potion to Sell
           </label>
           <select
             value={selectedPotionId}
@@ -94,7 +94,7 @@ export default function RecordSaleModal({ isOpen, onClose }) {
           >
             {potions.map((potion) => (
               <option key={potion.id} value={potion.id}>
-                {potion.name} — {potion.price} ⟡ ({potion.maxCraftable} craftable)
+                {potion.name} — {potion.price} ⟡ (Can make: {potion.maxCraftable} bottles from current stock)
               </option>
             ))}
           </select>
@@ -106,10 +106,10 @@ export default function RecordSaleModal({ isOpen, onClose }) {
             <div className="flex items-center justify-between text-moonlight font-medium">
               <span className="flex items-center gap-1.5">
                 <FlaskConical className="w-3.5 h-3.5 text-potion" />
-                Required Ingredients per Vial:
+                Ingredients Required for this Order:
               </span>
               <Badge variant={selectedPotion.maxCraftable >= quantity ? 'enchanted' : 'curse'} size="sm">
-                {selectedPotion.maxCraftable >= quantity ? 'Stock Ready' : 'Depletion Warning'}
+                {selectedPotion.maxCraftable >= quantity ? 'In Stock' : 'Not Enough Stock'}
               </Badge>
             </div>
             <div className="space-y-1">
@@ -129,7 +129,7 @@ export default function RecordSaleModal({ isOpen, onClose }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Quantity to Dispense
+              Quantity to Sell (Bottles)
             </label>
             <input
               type="number"
@@ -143,10 +143,10 @@ export default function RecordSaleModal({ isOpen, onClose }) {
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Total Valuation
+              Order Total Price
             </label>
             <div className="w-full bg-midnight-card/50 border border-midnight-border/50 rounded-xl px-3.5 py-2 text-sm font-mono font-bold text-potion-light flex items-center">
-              {totalCost} ⟡ ARC
+              {totalCost} ⟡
             </div>
           </div>
         </div>
@@ -155,11 +155,11 @@ export default function RecordSaleModal({ isOpen, onClose }) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Customer / Mage
+              Customer Name
             </label>
             <input
               type="text"
-              placeholder="e.g. Archmage Gerald"
+              placeholder="e.g. Master Gerald"
               value={customer}
               onChange={(e) => setCustomer(e.target.value)}
               disabled={loading}
@@ -168,11 +168,11 @@ export default function RecordSaleModal({ isOpen, onClose }) {
           </div>
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Guild / Allegiance
+              Guild / Customer Group
             </label>
             <input
               type="text"
-              placeholder="e.g. Arcane Vanguard"
+              placeholder="e.g. Arcane Order"
               value={guild}
               onChange={(e) => setGuild(e.target.value)}
               disabled={loading}
@@ -194,11 +194,10 @@ export default function RecordSaleModal({ isOpen, onClose }) {
             icon={Sparkles}
             disabled={!selectedPotion || selectedPotion.maxCraftable < quantity}
           >
-            Confirm & Deduct Stock
+            Complete Sale & Deduct Stock
           </Button>
         </div>
       </form>
     </Modal>
   );
 }
-

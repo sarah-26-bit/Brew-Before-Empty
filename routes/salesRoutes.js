@@ -13,3 +13,4 @@ router.route('/potions')
   .post(SalesController.createPotion);
 
 export default router;
+

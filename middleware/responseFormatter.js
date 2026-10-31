@@ -14,3 +14,4 @@ export function successResponse(res, data, message = null, statusCode = 200, met
     },
   });
 }
+

@@ -38,7 +38,7 @@ export default function StrangeHappeningsPage() {
     title: '',
     ingredientId: '',
     severity: 'MEDIUM',
-    anomalyType: 'Spectral Leakage',
+    anomalyType: 'Unexpected Loss / Leak',
     description: '',
   });
   const [resolvingId, setResolvingId] = useState(null);
@@ -57,7 +57,7 @@ export default function StrangeHappeningsPage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Failed to observe strange happenings from the backend telemetry.'
+        'Failed to load inventory alerts from the backend.'
       );
     } finally {
       setLoading(false);
@@ -71,11 +71,11 @@ export default function StrangeHappeningsPage() {
   const handleResolve = async (id, title) => {
     setResolvingId(id);
     try {
-      await api.resolveAnomaly(id, 'Purification ward applied by the Grand Magister.');
-      showToast(`Ward etched! Anomaly resolved: ${title}`, 'success');
+      await api.resolveAnomaly(id, 'Issue inspected and marked resolved by store manager.');
+      showToast(`Alert marked as resolved: ${title}`, 'success');
       triggerGlobalRefresh();
     } catch (err) {
-      showToast('Failed to resolve anomaly.', 'error');
+      showToast('Failed to resolve alert.', 'error');
     } finally {
       setResolvingId(null);
     }
@@ -88,18 +88,18 @@ export default function StrangeHappeningsPage() {
     setSubmitting(true);
     try {
       await api.addAnomaly(newAnomaly);
-      showToast(`Astral anomaly "${newAnomaly.title}" logged in Sanctum registry.`, 'warning');
+      showToast(`Inventory alert "${newAnomaly.title}" reported successfully.`, 'warning');
       setIsModalOpen(false);
       setNewAnomaly({
         title: '',
         ingredientId: '',
         severity: 'MEDIUM',
-        anomalyType: 'Spectral Leakage',
+        anomalyType: 'Unexpected Loss / Leak',
         description: '',
       });
       triggerGlobalRefresh();
     } catch (err) {
-      showToast('Failed to report anomaly.', 'error');
+      showToast('Failed to report inventory issue.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -121,10 +121,10 @@ export default function StrangeHappeningsPage() {
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
           <h3 className="font-display font-bold text-lg text-moonlight">
-            Astral & Vault Telemetry
+            Inventory Alerts & Unusual Activity
           </h3>
           <p className="text-xs text-moonlight-muted mt-0.5">
-            Detecting supernatural leakage, sudden consumption surges, and environmental decay
+            Monitors your stock for unexpected consumption spikes, unexplained drops, or spoilage leaks
           </p>
         </div>
 
@@ -135,30 +135,30 @@ export default function StrangeHappeningsPage() {
           onClick={() => setIsModalOpen(true)}
           className="shrink-0"
         >
-          Report Strange Disturbance
+          Report Inventory Issue
         </Button>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
-          title="Active Disturbances"
+          title="Active Alerts"
           value={`${activeCount}`}
-          subtitle="Requiring warding or restock"
+          subtitle="Issues needing review or restocking"
           icon={AlertOctagon}
           variant={activeCount > 0 ? 'curse' : 'enchanted'}
         />
         <StatCard
-          title="Critical Emergencies"
+          title="High Priority Alerts"
           value={`${criticalCount}`}
-          subtitle="Severe vault integrity hazards"
+          subtitle="Severe shortages or massive spikes"
           icon={AlertTriangle}
           variant="curse"
         />
         <StatCard
-          title="Wards Applied"
+          title="Resolved Alerts"
           value={`${resolvedCount}`}
-          subtitle="Resolved disturbances on record"
+          subtitle="Fixed issues in historical record"
           icon={ShieldCheck}
           variant="enchanted"
         />
@@ -167,9 +167,9 @@ export default function StrangeHappeningsPage() {
       {/* Filter Tabs */}
       <div className="flex items-center gap-2 border-b border-midnight-border pb-3">
         {[
-          { id: 'ALL', label: 'All Disturbances', count: anomalies.length },
-          { id: 'ACTIVE', label: 'Active Hazards', count: activeCount },
-          { id: 'RESOLVED', label: 'Resolved Wards', count: resolvedCount },
+          { id: 'ALL', label: 'All Alerts', count: anomalies.length },
+          { id: 'ACTIVE', label: 'Active Alerts', count: activeCount },
+          { id: 'RESOLVED', label: 'Resolved Alerts', count: resolvedCount },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -196,8 +196,8 @@ export default function StrangeHappeningsPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={ShieldCheck}
-          title="No Disturbances In Selected Realm"
-          description="All storage runes and vault wards are holding firm against spectral decay."
+          title="No Alerts Found"
+          description="All ingredient usage and inventory levels are completely normal with no discrepancies."
         />
       ) : (
         <div className="space-y-4">
@@ -229,7 +229,7 @@ export default function StrangeHappeningsPage() {
                         }
                         size="sm"
                       >
-                        {anom.severity}
+                        {anom.severity} PRIORITY
                       </Badge>
                       <Badge variant="default" size="sm">
                         {anom.anomalyType}
@@ -238,7 +238,7 @@ export default function StrangeHappeningsPage() {
                         variant={isActive ? 'curse' : 'enchanted'}
                         size="sm"
                       >
-                        {anom.status}
+                        {isActive ? 'UNRESOLVED' : 'RESOLVED'}
                       </Badge>
                     </div>
 
@@ -249,20 +249,20 @@ export default function StrangeHappeningsPage() {
                     <div className="p-3 rounded-xl bg-midnight-card/80 border border-midnight-border/60 text-xs flex items-center justify-between gap-2 flex-wrap">
                       <div className="flex items-center gap-2">
                         <Shield className="w-3.5 h-3.5 text-potion" />
-                        <span className="font-semibold text-moonlight">Recommended Ward:</span>
+                        <span className="font-semibold text-moonlight">Recommended Action:</span>
                         <span className="text-moonlight-muted">{anom.recommendedAction}</span>
                       </div>
                       {anom.ingredientName && (
                         <span className="font-mono text-[11px] text-arcane-light">
-                          Target Reagent: {anom.ingredientName}
+                          Affected Ingredient: {anom.ingredientName}
                         </span>
                       )}
                     </div>
 
                     <div className="flex items-center gap-4 text-[11px] text-moonlight-dark font-mono">
-                      <span>Detected: {new Date(anom.detectedAt).toLocaleString()}</span>
+                      <span>Detected on: {new Date(anom.detectedAt).toLocaleString()}</span>
                       {anom.resolvedAt && (
-                        <span>• Resolved: {new Date(anom.resolvedAt).toLocaleString()}</span>
+                        <span>• Resolved on: {new Date(anom.resolvedAt).toLocaleString()}</span>
                       )}
                     </div>
                   </div>
@@ -277,12 +277,12 @@ export default function StrangeHappeningsPage() {
                         isLoading={resolvingId === anom.id}
                         onClick={() => handleResolve(anom.id, anom.title)}
                       >
-                        Apply Warding Charm
+                        Mark as Resolved
                       </Button>
                     ) : (
                       <div className="flex items-center gap-1.5 text-enchanted-light text-xs font-semibold">
                         <CheckCircle2 className="w-4 h-4 text-enchanted" />
-                        <span>Warded & Stabilized</span>
+                        <span>Issue Resolved</span>
                       </div>
                     )}
                   </div>
@@ -297,18 +297,18 @@ export default function StrangeHappeningsPage() {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title="Report Strange Astral Disturbance"
-        subtitle="Log unexpected vault fluctuations or suspicious inventory shrinkage"
+        title="Report Inventory Issue or Alert"
+        subtitle="Log unexpected stock shortages, leakage, damage, or usage spikes"
       >
         <form onSubmit={handleCreateAnomaly} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Disturbance Title *
+              Issue Title *
             </label>
             <input
               type="text"
               required
-              placeholder="e.g. Spectral Spoilage in Cabinet 4"
+              placeholder="e.g. Spoilage or damaged container in storage room"
               value={newAnomaly.title}
               onChange={(e) => setNewAnomaly({ ...newAnomaly, title: e.target.value })}
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
@@ -318,51 +318,51 @@ export default function StrangeHappeningsPage() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-                Severity Level
+                Priority Level
               </label>
               <select
                 value={newAnomaly.severity}
                 onChange={(e) => setNewAnomaly({ ...newAnomaly, severity: e.target.value })}
                 className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
               >
-                <option value="LOW">LOW</option>
-                <option value="MEDIUM">MEDIUM</option>
-                <option value="HIGH">HIGH</option>
-                <option value="CRITICAL">CRITICAL</option>
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+                <option value="CRITICAL">Critical (Immediate Attention)</option>
               </select>
             </div>
 
             <div>
               <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-                Anomaly Type
+                Issue Category
               </label>
               <select
                 value={newAnomaly.anomalyType}
                 onChange={(e) => setNewAnomaly({ ...newAnomaly, anomalyType: e.target.value })}
                 className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
               >
-                <option value="Spectral Leakage">Spectral Leakage</option>
+                <option value="Unexpected Loss / Leak">Unexpected Loss / Leak</option>
                 <option value="Stockout Risk">Stockout Risk</option>
-                <option value="Thermal Degradation">Thermal Degradation</option>
-                <option value="Aetheric Disturbance">Aetheric Disturbance</option>
-                <option value="Ghostly Depletion">Ghostly Depletion</option>
+                <option value="Storage Temperature / Spoilage">Storage Temperature / Spoilage</option>
+                <option value="Usage Spike">Sudden Usage Spike</option>
+                <option value="Inventory Discrepancy">Inventory Count Discrepancy</option>
               </select>
             </div>
           </div>
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Afflicted Reagent (Optional)
+              Affected Ingredient (Optional)
             </label>
             <select
               value={newAnomaly.ingredientId}
               onChange={(e) => setNewAnomaly({ ...newAnomaly, ingredientId: e.target.value })}
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
             >
-              <option value="">-- General Vault Environment --</option>
+              <option value="">-- General Storage Area --</option>
               {ingredients.map((ing) => (
                 <option key={ing.id} value={ing.id}>
-                  {ing.name} ({ing.currentStock} {ing.unit})
+                  {ing.name} ({ing.currentStock} {ing.unit} in stock)
                 </option>
               ))}
             </select>
@@ -370,11 +370,11 @@ export default function StrangeHappeningsPage() {
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Observations & Visual Symptoms
+              Description & Details
             </label>
             <textarea
               rows="3"
-              placeholder="Describe frost formation, strange luminescence, rapid weight loss..."
+              placeholder="Describe what happened: container broken, unexpected drop in stock, unrecorded usage..."
               value={newAnomaly.description}
               onChange={(e) => setNewAnomaly({ ...newAnomaly, description: e.target.value })}
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
@@ -391,7 +391,7 @@ export default function StrangeHappeningsPage() {
               size="md"
               isLoading={submitting}
             >
-              Submit Disturbance Log
+              Submit Issue Report
             </Button>
           </div>
         </form>
@@ -399,4 +399,3 @@ export default function StrangeHappeningsPage() {
     </div>
   );
 }
-

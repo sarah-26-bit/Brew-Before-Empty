@@ -52,7 +52,7 @@ export default function RestockSpellPage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Failed to channel restock divinations from the backend.'
+        'Failed to load restock recommendations from the backend.'
       );
     } finally {
       setLoading(false);
@@ -99,7 +99,7 @@ export default function RestockSpellPage() {
 
   const handleCastRestockSpell = async () => {
     if (selectedIds.length === 0) {
-      showToast('Select at least one reagent to restock.', 'warning');
+      showToast('Please select at least one ingredient to restock.', 'warning');
       return;
     }
 
@@ -111,7 +111,7 @@ export default function RestockSpellPage() {
       });
 
       setRestockSuccessData(res.data);
-      showToast(`Incantation invoked! Restocked ${res.data.itemsRestocked} reagents.`, 'success');
+      showToast(`Restock successful! Replenished ${res.data.itemsRestocked} ingredients.`, 'success');
 
       // Trigger celebratory magical confetti!
       try {
@@ -127,7 +127,7 @@ export default function RestockSpellPage() {
 
       triggerGlobalRefresh();
     } catch (err) {
-      showToast('Restock spell failed to materialize.', 'error');
+      showToast('Restock failed to execute. Check backend connection.', 'error');
     } finally {
       setCasting(false);
     }
@@ -135,7 +135,7 @@ export default function RestockSpellPage() {
 
   return (
     <div className="space-y-6">
-      {/* Spellcasting Banner */}
+      {/* Restock Header Banner */}
       <div className="p-6 rounded-2xl bg-gradient-to-r from-purple-900/40 via-midnight-surface to-enchanted/15 border border-arcane/40 shadow-arcane-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-arcane to-enchanted p-0.5 shadow-arcane-sm flex items-center justify-center shrink-0">
@@ -145,11 +145,11 @@ export default function RestockSpellPage() {
           </div>
           <div>
             <h3 className="font-display font-bold text-lg text-moonlight flex items-center gap-2">
-              <span>Incantation of Abundant Harvest</span>
-              <Badge variant="enchanted" size="sm">Spell Ready</Badge>
+              <span>Smart Inventory Restocking</span>
+              <Badge variant="enchanted" size="sm">Ready to Restock</Badge>
             </h3>
             <p className="text-xs text-moonlight-muted mt-1 max-w-xl">
-              Algorithmic replenishment. Automatically channels supplies from verified Guildsmates to eliminate stockout hazards and resolve active shortages.
+              Calculates recommended order amounts based on daily customer demand and supplier delivery times. Click "Restock Selected Items" to add them directly to your inventory.
             </p>
           </div>
         </div>
@@ -163,46 +163,46 @@ export default function RestockSpellPage() {
           onClick={handleCastRestockSpell}
           className="shrink-0"
         >
-          Cast Restock Spell
+          Restock Selected Items
         </Button>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
-          title="Reagents Needing Restock"
+          title="Items Needing Reorder"
           value={`${restockData?.totalRecommendations || 0}`}
-          subtitle="Below safety preservation point"
+          subtitle="Stock below minimum safe buffer"
           icon={PackageCheck}
           variant="potion"
         />
         <StatCard
-          title="Selected for Invocation"
-          value={`${selectedIds.length} items`}
-          subtitle="Marked for delivery"
+          title="Items Selected"
+          value={`${selectedIds.length} ingredients`}
+          subtitle="Ready to be added to inventory"
           icon={Truck}
           variant="arcane"
         />
         <StatCard
-          title="Estimated Ritual Cost"
+          title="Total Estimated Cost"
           value={`${calculateTotalCost().toFixed(2)} ⟡`}
-          subtitle="Required Guild payment"
+          subtitle="Estimated supplier payment"
           icon={Coins}
           variant="enchanted"
         />
       </div>
 
-      {/* Successful Cast Report Banner */}
+      {/* Successful Restock Report Banner */}
       {restockSuccessData && (
         <div className="p-4 rounded-2xl bg-enchanted/15 border border-enchanted/40 text-enchanted-light shadow-enchanted-glow flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <CheckCircle2 className="w-5 h-5 shrink-0 text-enchanted" />
             <div>
               <p className="font-semibold text-sm text-moonlight">
-                {restockSuccessData.spellName} Cast Successfully!
+                Restock Complete!
               </p>
               <p className="text-xs text-moonlight-muted mt-0.5">
-                Restocked {restockSuccessData.itemsRestocked} reagents with total outlay of {restockSuccessData.totalCost} ⟡. All corresponding stockout warnings resolved.
+                Successfully added stock for {restockSuccessData.itemsRestocked} ingredients totaling {restockSuccessData.totalCost} ⟡. All corresponding low-stock warnings have been resolved.
               </p>
             </div>
           </div>
@@ -224,13 +224,13 @@ export default function RestockSpellPage() {
       ) : !restockData?.recommendations || restockData.recommendations.length === 0 ? (
         <EmptyState
           icon={Sparkles}
-          title="Optimal Reserves Maintained"
-          description="None of your reagents require restocking at this time. All stock levels safely exceed their minimum thresholds."
+          title="All Stock Levels Are Sufficient"
+          description="None of your ingredients need restocking right now. All items safely exceed their minimum threshold."
         />
       ) : (
         <Card
-          title="Alchemical Restock Recommendations"
-          subtitle="Calculated based on daily burn rate, supplier transit lead time, and dynamic safety buffers"
+          title="Restocking Recommendations"
+          subtitle="Calculated from average daily usage, supplier delivery lead times, and required buffer stock"
           action={
             <Button
               variant="secondary"
@@ -253,13 +253,13 @@ export default function RestockSpellPage() {
                       className="accent-arcane rounded"
                     />
                   </th>
-                  <th className="pb-3 font-semibold">Reagent</th>
-                  <th className="pb-3 font-semibold">Current / Min</th>
-                  <th className="pb-3 font-semibold">Urgency</th>
-                  <th className="pb-3 font-semibold">Lead Time</th>
-                  <th className="pb-3 font-semibold">Suggested Qty</th>
-                  <th className="pb-3 font-semibold">Unit Cost</th>
-                  <th className="pb-3 font-semibold">Estimated Total</th>
+                  <th className="pb-3 font-semibold">Ingredient</th>
+                  <th className="pb-3 font-semibold">Current / Min Threshold</th>
+                  <th className="pb-3 font-semibold">Priority</th>
+                  <th className="pb-3 font-semibold">Supplier Delivery Time</th>
+                  <th className="pb-3 font-semibold">Suggested Order Amount</th>
+                  <th className="pb-3 font-semibold">Price / Unit</th>
+                  <th className="pb-3 font-semibold">Estimated Total Cost</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-midnight-border/40 font-mono">
@@ -289,7 +289,7 @@ export default function RestockSpellPage() {
                       <td className="py-3.5 font-sans font-medium text-moonlight">
                         <span className="font-semibold text-sm">{item.name}</span>
                         <span className="block text-[10px] text-moonlight-muted font-mono">
-                          {item.supplier}
+                          Supplier: {item.supplier}
                         </span>
                       </td>
 
@@ -299,7 +299,7 @@ export default function RestockSpellPage() {
                         <span className="text-moonlight-muted"> / {item.minThreshold} {item.unit}</span>
                       </td>
 
-                      {/* Urgency */}
+                      {/* Priority */}
                       <td className="py-3.5">
                         <Badge
                           variant={
@@ -311,13 +311,13 @@ export default function RestockSpellPage() {
                           }
                           size="sm"
                         >
-                          {item.urgency}
+                          {item.urgency} PRIORITY
                         </Badge>
                       </td>
 
                       {/* Lead Time */}
                       <td className="py-3.5 text-moonlight-muted">
-                        {item.leadTimeDays} days
+                        {item.leadTimeDays} days delivery
                       </td>
 
                       {/* Quantity Input */}
@@ -355,4 +355,3 @@ export default function RestockSpellPage() {
     </div>
   );
 }
-

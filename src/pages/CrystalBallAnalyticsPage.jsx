@@ -33,7 +33,7 @@ export default function CrystalBallAnalyticsPage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'The Crystal Ball is clouded. Failed to load analytics from backend.'
+        'Failed to load analytics data from the backend.'
       );
     } finally {
       setLoading(false);
@@ -49,32 +49,32 @@ export default function CrystalBallAnalyticsPage() {
       {/* Header Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Prophecy Accuracy"
+          title="Forecast Accuracy"
           value={analytics?.accuracyRate || '94.2%'}
-          subtitle="Aetheric confidence quotient"
+          subtitle="Match between actual sales & forecast"
           icon={Award}
           variant="arcane"
           trend="+2.1% this week"
           trendPositive={true}
         />
         <StatCard
-          title="Turnover Velocity"
+          title="Inventory Turnover"
           value={analytics?.inventoryTurnoverRate || '4.8x'}
-          subtitle="Vault replenishment cycle"
+          subtitle="Restock & sell-through cycle"
           icon={TrendingUp}
           variant="potion"
         />
         <StatCard
           title="Stockout Risk Index"
           value={analytics?.stockoutRiskIndex || '18.4%'}
-          subtitle="Sanctum vulnerability metric"
+          subtitle="Items currently near threshold"
           icon={Zap}
           variant="curse"
         />
         <StatCard
-          title="Gross Alchemical Yield"
+          title="Total Sales Revenue"
           value={`${analytics?.totalRevenue || 0} ⟡`}
-          subtitle="Accumulated dispensary gold"
+          subtitle="Gross earnings from all sales"
           icon={Sparkles}
           variant="enchanted"
         />
@@ -88,8 +88,8 @@ export default function CrystalBallAnalyticsPage() {
         <>
           {/* Main Chart: Historical versus Predicted Demand */}
           <Card
-            title="Historical versus Predicted Demand Horizon"
-            subtitle="Evaluating actual historical dispenser consumption against algorithmic future curves"
+            title="Historical Sales vs Predicted Demand (Next 7 Days)"
+            subtitle="Comparing past actual customer sales with projected future demand (dashed line) and planning confidence range"
           >
             <DemandForecastChart data={analytics?.historicalVsPredicted || []} height={320} />
           </Card>
@@ -98,16 +98,16 @@ export default function CrystalBallAnalyticsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Category Breakdown */}
             <Card
-              title="Vault Asset Distribution by Category"
-              subtitle="Total gold valuation locked in reagent classifications"
+              title="Inventory Value Breakdown by Category"
+              subtitle="Total gold value of ingredients held in each category"
             >
               <CategoryBreakdownChart data={analytics?.categoryBreakdown || []} height={280} />
             </Card>
 
             {/* Top Performing Potions */}
             <Card
-              title="Top Performing Concoctions"
-              subtitle="Potions generating highest treasury returns"
+              title="Best-Selling Potions"
+              subtitle="Potions generating the highest total revenue"
             >
               <div className="space-y-3">
                 {analytics?.topPotions?.map((potion, idx) => (
@@ -124,7 +124,7 @@ export default function CrystalBallAnalyticsPage() {
                           {potion.name}
                         </h4>
                         <span className="text-[11px] text-moonlight-muted font-mono">
-                          {potion.quantitySold} units dispensed
+                          {potion.quantitySold} bottles sold
                         </span>
                       </div>
                     </div>
@@ -145,17 +145,17 @@ export default function CrystalBallAnalyticsPage() {
 
           {/* Historical vs Predicted Variance Breakdown Table */}
           <Card
-            title="Forecast Variance Ledger"
-            subtitle="Auditing divergence between divine projection and recorded consumption"
+            title="Day-by-Day Forecast Accuracy Ledger"
+            subtitle="Auditing difference between predicted demand and actual recorded customer purchases"
           >
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
                 <thead className="border-b border-midnight-border/70 text-moonlight-muted uppercase tracking-wider">
                   <tr>
                     <th className="pb-3 font-semibold font-sans">Observation Period</th>
-                    <th className="pb-3 font-semibold font-sans">Recorded Demand</th>
-                    <th className="pb-3 font-semibold font-sans">Prophesied Value</th>
-                    <th className="pb-3 font-semibold font-sans">Aetheric Divergence</th>
+                    <th className="pb-3 font-semibold font-sans">Actual Recorded Sales</th>
+                    <th className="pb-3 font-semibold font-sans">Predicted Demand</th>
+                    <th className="pb-3 font-semibold font-sans">Accuracy Variance</th>
                     <th className="pb-3 font-semibold font-sans">Status</th>
                   </tr>
                 </thead>
@@ -166,7 +166,7 @@ export default function CrystalBallAnalyticsPage() {
                         {row.period}
                       </td>
                       <td className="py-2.5">
-                        {row.historical !== null ? `${row.historical} units` : '— (Pending)'}
+                        {row.historical !== null ? `${row.historical} units` : '— (Future Period)'}
                       </td>
                       <td className="py-2.5 text-potion-light font-bold">
                         {row.predicted} units
@@ -179,7 +179,7 @@ export default function CrystalBallAnalyticsPage() {
                           variant={row.historical !== null ? 'enchanted' : 'arcane'}
                           size="sm"
                         >
-                          {row.historical !== null ? 'VERIFIED' : 'PROJECTED'}
+                          {row.historical !== null ? 'COMPLETED' : 'PROJECTED'}
                         </Badge>
                       </td>
                     </tr>
@@ -193,4 +193,3 @@ export default function CrystalBallAnalyticsPage() {
     </div>
   );
 }
-

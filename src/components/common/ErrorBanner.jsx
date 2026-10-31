@@ -3,8 +3,8 @@ import { AlertTriangle, RefreshCw, ServerCrash } from 'lucide-react';
 import Button from './Button';
 
 export default function ErrorBanner({
-  title = 'Arcane Connection Disrupted',
-  message = 'Failed to commune with the SPELLSTOCK Node.js backend. Please ensure the server is active on port 5001.',
+  title = 'Backend Server Connection Error',
+  message = 'Unable to connect to the SPELLSTOCK backend server. Please make sure the server is running on port 5001.',
   onRetry,
   isRetrying = false,
   className = '',
@@ -26,7 +26,7 @@ export default function ErrorBanner({
           </p>
           <div className="mt-2 text-[11px] text-moonlight-dark font-mono flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-curse"></span>
-            <span>Target URI: <code className="text-arcane-light">http://localhost:5001/api</code></span>
+            <span>Backend Address: <code className="text-arcane-light">http://localhost:5001/api</code></span>
           </div>
         </div>
       </div>
@@ -40,10 +40,9 @@ export default function ErrorBanner({
           icon={RefreshCw}
           className="shrink-0 whitespace-nowrap self-end sm:self-center"
         >
-          Re-attune Core
+          Retry Connection
         </Button>
       )}
     </div>
   );
 }
-

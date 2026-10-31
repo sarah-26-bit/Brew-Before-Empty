@@ -37,7 +37,7 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Failed to commune with the transaction registers on the backend.'
+        'Failed to load sales transactions from the backend.'
       );
     } finally {
       setLoading(false);
@@ -66,23 +66,23 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
       {/* Top Summary Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <StatCard
-          title="Total Gold Earned"
+          title="Total Sales Revenue"
           value={`${totalRevenue.toFixed(2)} ⟡`}
-          subtitle="Gross alchemical revenue"
+          subtitle="Gross earnings from all orders"
           icon={Coins}
           variant="potion"
         />
         <StatCard
-          title="Transactions Logged"
+          title="Total Orders Completed"
           value={`${sales.length}`}
-          subtitle={`${totalQuantity} total vials dispensed`}
+          subtitle={`${totalQuantity} potion bottles sold`}
           icon={Receipt}
           variant="arcane"
         />
         <StatCard
-          title="Average Order Value"
+          title="Average Sale Value"
           value={`${avgOrderValue} ⟡`}
-          subtitle="Per guild transaction"
+          subtitle="Average revenue per order"
           icon={Shield}
           variant="enchanted"
         />
@@ -94,7 +94,7 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-moonlight-muted" />
           <input
             type="text"
-            placeholder="Search transactions by potion, mage, guild, or ID..."
+            placeholder="Search orders by potion, customer, group, or ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-midnight-surface border border-midnight-border rounded-xl text-sm text-moonlight placeholder-moonlight-dark focus:border-arcane focus:outline-none transition-colors"
@@ -108,7 +108,7 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
           onClick={() => setIsRecordModalOpen(true)}
           className="shrink-0"
         >
-          Record Potion Dispensation
+          Record New Sale
         </Button>
       </div>
 
@@ -120,13 +120,13 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
       ) : filteredSales.length === 0 ? (
         <EmptyState
           icon={Receipt}
-          title="No Transactions Logged"
+          title="No Sales Transactions Found"
           description={
             searchTerm
               ? 'No sales records match your search criteria.'
-              : 'The dispensary ledgers are clear. Record your first sale to activate automatic ingredient deduction.'
+              : 'Your sales log is currently empty. Record a sale to see stock deductions in action.'
           }
-          actionLabel="Record New Dispensation"
+          actionLabel="Record New Sale"
           onAction={() => setIsRecordModalOpen(true)}
         />
       ) : (
@@ -149,14 +149,14 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
                         {sale.potionName}
                       </h4>
                       <Badge variant="potion" size="sm">
-                        {sale.id}
+                        Order #{sale.id}
                       </Badge>
                     </div>
 
                     <div className="flex items-center gap-3 mt-1 text-xs text-moonlight-muted flex-wrap">
                       <span className="flex items-center gap-1">
                         <User className="w-3.5 h-3.5 text-moonlight-dark" />
-                        <strong className="text-moonlight font-medium">{sale.customer}</strong>
+                        <span>Customer: <strong className="text-moonlight font-medium">{sale.customer}</strong></span>
                       </span>
                       <span>•</span>
                       <span className="text-arcane-light font-mono">{sale.guild}</span>
@@ -172,7 +172,7 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
                 <div className="flex items-center justify-between lg:justify-end gap-6 border-t lg:border-t-0 pt-3 lg:pt-0 border-midnight-border/50">
                   <div className="text-left lg:text-right">
                     <span className="text-[10px] uppercase font-mono tracking-wider text-moonlight-muted block">
-                      Dispensation Total
+                      Order Total
                     </span>
                     <span className="font-display font-bold text-xl text-potion-light font-mono">
                       +{sale.totalGold.toFixed(2)} ⟡
@@ -186,7 +186,7 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
                 <div className="flex items-center gap-2 text-xs text-moonlight-muted mb-2">
                   <ArrowDownRight className="w-3.5 h-3.5 text-enchanted-light shrink-0" />
                   <span className="font-semibold uppercase tracking-wider text-[10px] text-enchanted-light">
-                    Automated Reagent Stock Deductions:
+                    Ingredients Automatically Deducted from Stock:
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -202,7 +202,7 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
                     ))
                   ) : (
                     <span className="text-xs text-moonlight-muted italic">
-                      Direct inventory balance adjusted.
+                      Inventory quantities deducted automatically.
                     </span>
                   )}
                 </div>
@@ -220,4 +220,3 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
     </div>
   );
 }
-

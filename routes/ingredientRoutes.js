@@ -18,3 +18,4 @@ router.route('/:id')
 router.get('/:id/movements', IngredientController.getMovements);
 
 export default router;
+

@@ -12,3 +12,4 @@ router.patch('/:id/toggle', EventController.toggleEvent);
 router.post('/seed', EventController.seed);
 
 export default router;
+

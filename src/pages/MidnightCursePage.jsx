@@ -41,7 +41,7 @@ export default function MidnightCursePage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Failed to commune with the Midnight Curse Crucible on the backend.'
+        'Failed to connect to the Seasonal Event engine on the backend.'
       );
     } finally {
       setLoading(false);
@@ -64,13 +64,13 @@ export default function MidnightCursePage() {
       setCurseState(res.data.curseState);
       showToast(
         targetActive
-          ? 'Blood Moon Necrotic Surge unleashed! Demand and decay accelerated.'
-          : 'Holy Ward etched! The Midnight Curse has been temporarily subdued.',
+          ? 'Demand Surge activated! Ingredient consumption forecasts are now multiplied.'
+          : 'Demand Surge deactivated. Forecasts restored to standard baseline.',
         targetActive ? 'warning' : 'success'
       );
       triggerGlobalRefresh();
     } catch (err) {
-      showToast('Failed to modify curse crucible state.', 'error');
+      showToast('Failed to change seasonal event status.', 'error');
     } finally {
       setToggling(false);
     }
@@ -107,19 +107,19 @@ export default function MidnightCursePage() {
                   variant={curseState?.active ? 'curse' : 'enchanted'}
                   size="md"
                 >
-                  {curseState?.active ? 'SURGE ACTIVE' : 'WARDED & DORMANT'}
+                  {curseState?.active ? 'HIGH DEMAND SURGE ACTIVE' : 'NORMAL DEMAND (INACTIVE)'}
                 </Badge>
               </div>
 
               <p className="text-xs text-moonlight-muted mt-2 max-w-2xl leading-relaxed">
                 {curseState?.description ||
-                  'The celestial curse warps normal inventory dynamics, speeding up reagent decay and doubling consumer buying hysteria.'}
+                  'Simulates holiday and festival events where customer traffic increases significantly, testing your inventory resilience before the real rush.'}
               </p>
 
               <div className="flex items-center gap-4 mt-3 text-xs font-mono text-moonlight-dark">
-                <span>Phase: <strong className="text-moonlight">{curseState?.curseLevel || 'Penumbral'}</strong></span>
+                <span>Event: <strong className="text-moonlight">{curseState?.curseLevel || 'Penumbral Surge'}</strong></span>
                 <span>•</span>
-                <span>Surge Multiplier: <strong className="text-potion-light">{multiplier}x</strong></span>
+                <span>Demand Rate: <strong className="text-potion-light">{multiplier}x normal sales</strong></span>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function MidnightCursePage() {
               icon={curseState?.active ? Shield : Flame}
               onClick={() => handleToggleCurse()}
             >
-              {curseState?.active ? 'Dispel & Etch Holy Ward' : 'Unleash Blood Moon Surge'}
+              {curseState?.active ? 'Deactivate Surge (Return to Normal)' : 'Activate Demand Surge (+75%)'}
             </Button>
           </div>
         </div>
@@ -147,23 +147,23 @@ export default function MidnightCursePage() {
           {/* Crucible Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <StatCard
-              title="Consumption Velocity"
+              title="Demand Multiplier"
               value={`${multiplier}x`}
-              subtitle="Daily depletion acceleration"
+              subtitle="Sales rate compared to normal"
               icon={Flame}
               variant="potion"
             />
             <StatCard
-              title="Ethereal Spoilage Risk"
+              title="Estimated Spoilage Rate"
               value={curseState?.spoilageRate || '+32%'}
-              subtitle="Organic & scaleless degradation"
+              subtitle="Extra buffer needed for waste"
               icon={Skull}
               variant="curse"
             />
             <StatCard
-              title="Sanctum Ward Integrity"
+              title="Store Preparedness Level"
               value={curseState?.wardingStrength || '64%'}
-              subtitle="Remaining shield threshold"
+              subtitle="Stock buffer capacity ready"
               icon={ShieldAlert}
               variant="arcane"
             />
@@ -171,17 +171,17 @@ export default function MidnightCursePage() {
 
           {/* Curse Multiplier Tuning Card */}
           <Card
-            title="Curse Multiplier Calibration"
-            subtitle="Fine-tune how aggressively the nocturnal surge drains reagents and inflates demand"
+            title="Adjust Customer Traffic Multiplier"
+            subtitle="Simulate different customer traffic levels to see how quickly stock depletes across your store"
           >
             <div className="space-y-4">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-midnight-card/50 border border-midnight-border">
                 <div className="w-full sm:w-auto">
                   <span className="text-xs uppercase font-mono tracking-wider text-moonlight-muted block">
-                    Active Multiplier
+                    Current Simulation Rate
                   </span>
                   <span className="text-2xl font-display font-bold text-potion-light font-mono">
-                    {multiplier}x Velocity
+                    {multiplier}x Customer Demand
                   </span>
                 </div>
 
@@ -201,7 +201,7 @@ export default function MidnightCursePage() {
                     isLoading={toggling}
                     onClick={() => handleToggleCurse(true)}
                   >
-                    Apply Intensity
+                    Apply Rate
                   </Button>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export default function MidnightCursePage() {
               {/* Afflicted Ingredients */}
               <div>
                 <h4 className="font-display font-semibold text-sm text-moonlight mb-2">
-                  Prime Targets of Current Curse:
+                  Ingredients Most Heavily Consumed During This Surge:
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {curseState?.affectedIngredients?.map((name, i) => (
@@ -230,4 +230,3 @@ export default function MidnightCursePage() {
     </div>
   );
 }
-

@@ -89,3 +89,4 @@ ingredientSchema.virtual('stockStatus').get(function () {
 });
 
 export const Ingredient = mongoose.model('Ingredient', ingredientSchema);
+

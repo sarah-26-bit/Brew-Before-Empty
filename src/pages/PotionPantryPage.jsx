@@ -46,7 +46,7 @@ export default function PotionPantryPage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Failed to retrieve reagents from the SPELLSTOCK backend.'
+        'Failed to load ingredients from the SPELLSTOCK backend.'
       );
     } finally {
       setLoading(false);
@@ -58,16 +58,16 @@ export default function PotionPantryPage() {
   }, [refreshKey]);
 
   const handleDelete = async (id, name) => {
-    if (!window.confirm(`Are you certain you wish to banish ${name} from the Sanctum records?`)) {
+    if (!window.confirm(`Are you sure you want to delete ${name} from your inventory?`)) {
       return;
     }
     setDeletingId(id);
     try {
       await api.deleteIngredient(id);
-      showToast(`${name} banished from pantry registers.`, 'info');
+      showToast(`${name} removed from inventory.`, 'info');
       triggerGlobalRefresh();
     } catch (err) {
-      showToast('Failed to delete reagent.', 'error');
+      showToast('Failed to delete ingredient.', 'error');
     } finally {
       setDeletingId(null);
     }
@@ -114,7 +114,7 @@ export default function PotionPantryPage() {
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-moonlight-muted" />
           <input
             type="text"
-            placeholder="Search by reagent, guild, or category..."
+            placeholder="Search by ingredient name, supplier, or category..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-midnight-surface border border-midnight-border rounded-xl text-sm text-moonlight placeholder-moonlight-dark focus:border-arcane focus:outline-none transition-colors"
@@ -129,7 +129,7 @@ export default function PotionPantryPage() {
           onClick={handleAddNew}
           className="shrink-0"
         >
-          Inscribe New Reagent
+          Add New Ingredient
         </Button>
       </div>
 
@@ -147,24 +147,29 @@ export default function PotionPantryPage() {
                   : 'bg-midnight-surface text-moonlight-muted border-midnight-border hover:border-arcane/40'
               }`}
             >
-              {cat}
+              {cat === 'ALL' ? 'All Categories' : cat}
             </button>
           ))}
         </div>
 
         {/* Status Filter */}
         <div className="flex items-center gap-1.5 bg-midnight-surface p-1 rounded-xl border border-midnight-border">
-          {['ALL', 'LOW', 'CRITICAL', 'HEALTHY'].map((st) => (
+          {[
+            { id: 'ALL', label: 'All Status' },
+            { id: 'LOW', label: 'Low Stock' },
+            { id: 'CRITICAL', label: 'Critical' },
+            { id: 'HEALTHY', label: 'Healthy' },
+          ].map((st) => (
             <button
-              key={st}
-              onClick={() => setSelectedStatus(st)}
-              className={`px-2.5 py-1 rounded-lg transition-all text-[11px] font-mono font-medium ${
-                selectedStatus === st
-                  ? 'bg-midnight-card text-moonlight border border-midnight-border/80 shadow-sm'
+              key={st.id}
+              onClick={() => setSelectedStatus(st.id)}
+              className={`px-2.5 py-1 rounded-lg transition-all text-[11px] font-medium ${
+                selectedStatus === st.id
+                  ? 'bg-midnight-card text-moonlight border border-midnight-border/80 shadow-sm font-semibold'
                   : 'text-moonlight-muted hover:text-moonlight'
               }`}
             >
-              {st}
+              {st.label}
             </button>
           ))}
         </div>
@@ -178,13 +183,13 @@ export default function PotionPantryPage() {
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={Sparkles}
-          title="No Reagents Found"
+          title="No Ingredients Found"
           description={
             searchTerm || selectedCategory !== 'ALL' || selectedStatus !== 'ALL'
-              ? 'No magical ingredients match your current filter parameters.'
-              : 'The Potion Pantry is completely empty. Inscribe your first reagent to commence inventory tracking.'
+              ? 'No ingredients match your current search and filter settings.'
+              : 'Your Potion Pantry is currently empty. Click "Add New Ingredient" to get started.'
           }
-          actionLabel={searchTerm ? 'Clear Filters' : 'Inscribe Reagent'}
+          actionLabel={searchTerm ? 'Clear Search' : 'Add First Ingredient'}
           onAction={() => {
             if (searchTerm || selectedCategory !== 'ALL' || selectedStatus !== 'ALL') {
               setSearchTerm('');
@@ -201,13 +206,13 @@ export default function PotionPantryPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-midnight-card/80 border-b border-midnight-border text-moonlight-muted font-mono uppercase tracking-wider">
                 <tr>
-                  <th className="py-3.5 px-4 font-semibold">Reagent Details</th>
+                  <th className="py-3.5 px-4 font-semibold">Ingredient Details</th>
                   <th className="py-3.5 px-4 font-semibold">Category</th>
-                  <th className="py-3.5 px-4 font-semibold">Stock Availability</th>
-                  <th className="py-3.5 px-4 font-semibold">Preservation Status</th>
-                  <th className="py-3.5 px-4 font-semibold">Daily Velocity</th>
-                  <th className="py-3.5 px-4 font-semibold">Stockout Horizon</th>
-                  <th className="py-3.5 px-4 font-semibold">Valuation</th>
+                  <th className="py-3.5 px-4 font-semibold">Current Stock Level</th>
+                  <th className="py-3.5 px-4 font-semibold">Stock Status</th>
+                  <th className="py-3.5 px-4 font-semibold">Daily Usage (Avg)</th>
+                  <th className="py-3.5 px-4 font-semibold">Runs Out In</th>
+                  <th className="py-3.5 px-4 font-semibold">Unit Price</th>
                   <th className="py-3.5 px-4 font-semibold text-right">Actions</th>
                 </tr>
               </thead>
@@ -230,7 +235,7 @@ export default function PotionPantryPage() {
                             <span>•</span>
                             <span className="text-potion-light">{ing.rarity}</span>
                             <span>•</span>
-                            <span>{ing.supplier}</span>
+                            <span>Supplier: {ing.supplier}</span>
                           </div>
                         </div>
                       </td>
@@ -250,7 +255,7 @@ export default function PotionPantryPage() {
                               {ing.currentStock} {ing.unit}
                             </span>
                             <span className="text-moonlight-muted text-[10px]">
-                              min {ing.minThreshold}
+                              min: {ing.minThreshold}
                             </span>
                           </div>
                           {/* Progress bar */}
@@ -281,13 +286,13 @@ export default function PotionPantryPage() {
                           }
                           size="sm"
                         >
-                          {ing.stockStatus}
+                          {ing.stockStatus === 'CRITICAL' ? 'CRITICAL LOW' : ing.stockStatus === 'LOW' ? 'LOW STOCK' : 'HEALTHY'}
                         </Badge>
                       </td>
 
-                      {/* Consumption */}
+                      {/* Daily Consumption */}
                       <td className="py-4 px-4 font-mono text-moonlight-muted">
-                        <span>{ing.effectiveDailyConsumption} {ing.unit}/d</span>
+                        <span>{ing.effectiveDailyConsumption} {ing.unit}/day</span>
                       </td>
 
                       {/* Days Remaining & Stockout Date */}
@@ -298,10 +303,10 @@ export default function PotionPantryPage() {
                               ing.daysRemaining <= 3 ? 'text-curse-light' : 'text-moonlight'
                             }`}
                           >
-                            {ing.daysRemaining} days
+                            {ing.daysRemaining} days left
                           </span>
                           <span className="block text-[10px] text-moonlight-muted">
-                            {ing.stockoutDate}
+                            Out on: {ing.stockoutDate}
                           </span>
                         </div>
                       </td>
@@ -312,7 +317,7 @@ export default function PotionPantryPage() {
                           {ing.costPerUnit} ⟡
                         </span>
                         <span className="text-[10px] text-moonlight-muted block">
-                          Total: {(ing.currentStock * ing.costPerUnit).toFixed(0)} ⟡
+                          Total Value: {(ing.currentStock * ing.costPerUnit).toFixed(0)} ⟡
                         </span>
                       </td>
 
@@ -321,7 +326,7 @@ export default function PotionPantryPage() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleEdit(ing)}
-                            title="Edit Reagent"
+                            title="Edit Ingredient"
                             className="p-1.5 text-moonlight-muted hover:text-arcane-light hover:bg-midnight-border/50 rounded-lg transition-colors"
                           >
                             <Edit className="w-4 h-4" />
@@ -329,7 +334,7 @@ export default function PotionPantryPage() {
                           <button
                             onClick={() => handleDelete(ing.id, ing.name)}
                             disabled={deletingId === ing.id}
-                            title="Banish Reagent"
+                            title="Delete Ingredient"
                             className="p-1.5 text-moonlight-muted hover:text-curse hover:bg-midnight-border/50 rounded-lg transition-colors"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -345,7 +350,7 @@ export default function PotionPantryPage() {
         </Card>
       )}
 
-      {/* Reagent Add/Edit Modal */}
+      {/* Ingredient Add/Edit Modal */}
       <IngredientModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -354,4 +359,3 @@ export default function PotionPantryPage() {
     </div>
   );
 }
-

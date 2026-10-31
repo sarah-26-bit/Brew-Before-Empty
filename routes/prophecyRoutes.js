@@ -7,3 +7,4 @@ router.get('/', ProphecyController.getAllForecasts);
 router.get('/:id', ProphecyController.getIngredientForecast);
 
 export default router;
+

@@ -47,3 +47,4 @@ router.use('/analytics', analyticsRoutes);
 router.use('/events', eventRoutes);
 
 export default router;
+

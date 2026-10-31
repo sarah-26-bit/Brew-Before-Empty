@@ -6,3 +6,4 @@ const router = express.Router();
 router.get('/', AnalyticsController.getAnalytics);
 
 export default router;
+

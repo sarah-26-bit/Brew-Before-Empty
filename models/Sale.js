@@ -75,3 +75,4 @@ const saleSchema = new mongoose.Schema(
 );
 
 export const Sale = mongoose.model('Sale', saleSchema);
+

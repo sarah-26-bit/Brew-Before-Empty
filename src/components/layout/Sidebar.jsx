@@ -105,6 +105,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 <div className="flex items-center gap-1.5 shrink-0">
                   {badgeCount > 0 && (
                     <span
+                      title={item.badgeType === 'curse' ? `${badgeCount} active alerts` : `${badgeCount} low stock items`}
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
                         item.badgeType === 'curse'
                           ? 'bg-curse/20 text-curse-light border-curse/40 animate-pulse'
@@ -128,7 +129,7 @@ export default function Sidebar({ isOpen, onClose }) {
           })}
         </nav>
 
-        {/* System & Curse Status Footer Card */}
+        {/* Demand Season Footer Card */}
         <div className="p-4 border-t border-midnight-border/70">
           <div
             onClick={() => setActiveTab('curse')}
@@ -140,7 +141,7 @@ export default function Sidebar({ isOpen, onClose }) {
           >
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-mono uppercase tracking-wider text-moonlight-muted">
-                Celestial Phase
+                Demand Season
               </span>
               <span
                 className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
@@ -149,11 +150,11 @@ export default function Sidebar({ isOpen, onClose }) {
                     : 'bg-enchanted/20 text-enchanted-light'
                 }`}
               >
-                {globalCounts.curseActive ? 'ACTIVE SURGE' : 'SERENE'}
+                {globalCounts.curseActive ? 'HIGH DEMAND' : 'NORMAL'}
               </span>
             </div>
             <p className="text-xs font-semibold text-moonlight mt-1 truncate">
-              {globalCounts.curseActive ? globalCounts.curseName : 'Waxing Gibbous'}
+              {globalCounts.curseActive ? globalCounts.curseName : 'Standard Operation'}
             </p>
           </div>
         </div>
@@ -161,4 +162,3 @@ export default function Sidebar({ isOpen, onClose }) {
     </>
   );
 }
-

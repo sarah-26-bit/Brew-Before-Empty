@@ -37,7 +37,7 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Unable to commune with the SPELLSTOCK backend server. Verify server is listening on port 5001.'
+        'Unable to connect to the SPELLSTOCK backend server. Please verify the server is running on port 5001.'
       );
     } finally {
       setLoading(false);
@@ -72,7 +72,7 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
 
   return (
     <div className="space-y-6">
-      {/* Curse Warning Banner if active */}
+      {/* Seasonal Surge Warning Banner if active */}
       {curseState?.active && (
         <div className="p-4 rounded-2xl bg-gradient-to-r from-curse/20 via-purple-950/40 to-curse/10 border border-curse/50 shadow-curse-glow flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -81,8 +81,8 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
             </div>
             <div>
               <h4 className="font-display font-bold text-sm text-curse-light flex items-center gap-2">
-                <span>{curseState.name} Active</span>
-                <Badge variant="curse" size="sm">Phase {curseState.multiplier}x Surge</Badge>
+                <span>{curseState.name} (High Demand Event Active)</span>
+                <Badge variant="curse" size="sm">{curseState.multiplier}x Normal Demand</Badge>
               </h4>
               <p className="text-xs text-moonlight-muted mt-0.5">
                 {curseState.description}
@@ -95,50 +95,50 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
             onClick={() => setActiveTab('curse')}
             className="shrink-0"
           >
-            Inspect Curse Crucible
+            View Demand Multipliers
           </Button>
         </div>
       )}
 
-      {/* Primary Alchemical Metrics */}
+      {/* Primary Key Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          title="Sanctum Vault Inventory"
+          title="Total Items in Stock"
           value={`${metrics?.totalStockItems || 0}`}
-          subtitle="Reagent units cataloged"
+          subtitle="Ingredient units available"
           icon={Boxes}
           variant="arcane"
-          trend="+12% vs last cycle"
+          trend="+12% this week"
           trendPositive={true}
           onClick={() => setActiveTab('pantry')}
         />
         <StatCard
-          title="Gross Potion Revenue"
+          title="Total Sales Revenue"
           value={`${metrics?.totalSalesRevenue || 0} ⟡`}
-          subtitle={`${metrics?.transactionCount || 0} sales recorded`}
+          subtitle={`${metrics?.transactionCount || 0} customer orders completed`}
           icon={Coins}
           variant="potion"
-          trend="Gold Treasury Active"
+          trend="Treasury Active"
           trendPositive={true}
           onClick={() => setActiveTab('sales')}
         />
         <StatCard
-          title="Low Stock Hazard"
+          title="Low Stock Warnings"
           value={`${metrics?.lowStockCount || 0}`}
-          subtitle={`${metrics?.criticalStockCount || 0} critically depleted`}
+          subtitle={`${metrics?.criticalStockCount || 0} items critically low`}
           icon={AlertTriangle}
           variant={metrics?.lowStockCount > 0 ? 'curse' : 'enchanted'}
-          trend={metrics?.lowStockCount > 0 ? 'Requires Restock' : 'Supplies Balanced'}
+          trend={metrics?.lowStockCount > 0 ? 'Needs Reordering' : 'All Stock Healthy'}
           trendPositive={metrics?.lowStockCount === 0}
           onClick={() => setActiveTab('restock')}
         />
         <StatCard
-          title="Strange Anomalies"
+          title="Unusual Activity Alerts"
           value={`${metrics?.activeAnomaliesCount || 0}`}
-          subtitle="Active spectral disturbances"
+          subtitle="Consumption spikes or leaks"
           icon={AlertOctagon}
           variant={metrics?.activeAnomaliesCount > 0 ? 'curse' : 'arcane'}
-          trend={metrics?.activeAnomaliesCount > 0 ? 'Needs Attention' : 'Wards Intact'}
+          trend={metrics?.activeAnomaliesCount > 0 ? 'Requires Review' : 'No Active Issues'}
           trendPositive={metrics?.activeAnomaliesCount === 0}
           onClick={() => setActiveTab('happenings')}
         />
@@ -149,8 +149,8 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
         {/* Low Stock Warnings Table */}
         <div className="lg:col-span-2">
           <Card
-            title="Low-Stock Warnings & Depletion Velocity"
-            subtitle="Reagents that have breached their minimum magical preservation threshold"
+            title="Low-Stock Warnings & Daily Usage"
+            subtitle="Ingredients that have dropped below their minimum safe stock level"
             action={
               <Button
                 variant="primary"
@@ -158,26 +158,26 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
                 icon={Wand2}
                 onClick={onOpenRestock}
               >
-                Cast Restock Spell
+                Restock Low Items
               </Button>
             }
           >
             {lowStockIngredients.length === 0 ? (
               <EmptyState
                 icon={Sparkles}
-                title="All Reagent Reserves Are Plentiful"
-                description="No items have breached the minimum threshold. Your alchemical storage is fully saturated."
+                title="All Ingredient Levels Are Plentiful"
+                description="No items have breached the minimum safety threshold. Your inventory is well stocked."
               />
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
                     <tr className="border-b border-midnight-border/60 text-moonlight-muted font-mono uppercase tracking-wider">
-                      <th className="pb-3 font-semibold">Reagent</th>
-                      <th className="pb-3 font-semibold">Current / Min</th>
+                      <th className="pb-3 font-semibold">Ingredient</th>
+                      <th className="pb-3 font-semibold">Current / Min Threshold</th>
                       <th className="pb-3 font-semibold">Status</th>
-                      <th className="pb-3 font-semibold">Burn Rate</th>
-                      <th className="pb-3 font-semibold">Days Left</th>
+                      <th className="pb-3 font-semibold">Daily Usage (Avg)</th>
+                      <th className="pb-3 font-semibold">Stock Left</th>
                       <th className="pb-3 font-semibold text-right">Action</th>
                     </tr>
                   </thead>
@@ -198,7 +198,7 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
                         </td>
                         <td className="py-3">
                           <Badge variant={ing.stockStatus === 'CRITICAL' ? 'curse' : 'potion'} size="sm">
-                            {ing.stockStatus}
+                            {ing.stockStatus === 'CRITICAL' ? 'CRITICAL LOW' : 'LOW STOCK'}
                           </Badge>
                         </td>
                         <td className="py-3 font-mono text-moonlight-muted">
@@ -206,7 +206,7 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
                         </td>
                         <td className="py-3 font-mono">
                           <span className={ing.daysRemaining <= 3 ? 'text-curse-light font-bold' : 'text-moonlight'}>
-                            {ing.daysRemaining} days
+                            {ing.daysRemaining} days left
                           </span>
                         </td>
                         <td className="py-3 text-right">
@@ -231,20 +231,20 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
         {/* Stock Level Bar Chart Preview */}
         <div>
           <Card
-            title="Reserve Saturation"
-            subtitle="Current stock levels vs threshold limit"
+            title="Stock vs Minimum Threshold"
+            subtitle="Current available stock compared to minimum safety limit"
           >
             <StockLevelBarChart data={lowStockIngredients.length > 0 ? lowStockIngredients : []} height={260} />
           </Card>
         </div>
       </div>
 
-      {/* Recent Activity: Transactions & Strange Happenings */}
+      {/* Recent Activity: Transactions & Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Transactions */}
         <Card
-          title="Recent Dispensations & Deductions"
-          subtitle="Potions dispensed and automatic reagent deductions logged"
+          title="Recent Sales & Stock Deductions"
+          subtitle="Potions sold and ingredients automatically deducted from inventory"
           action={
             <Button
               variant="ghost"
@@ -252,15 +252,15 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
               icon={ArrowRight}
               onClick={() => setActiveTab('sales')}
             >
-              View All
+              View All Sales
             </Button>
           }
         >
           {recentSales.length === 0 ? (
             <EmptyState
               icon={Clock}
-              title="No Sales Recorded"
-              description="Record your first potion sale to initiate the transaction chronicle."
+              title="No Sales Recorded Yet"
+              description="Record your first potion sale to begin tracking stock movements."
               actionLabel="Record Sale"
               onAction={onOpenRecordSale}
             />
@@ -278,7 +278,7 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
                     <div>
                       <p className="font-semibold text-moonlight text-sm">{sale.potionName}</p>
                       <p className="text-moonlight-muted text-[11px]">
-                        {sale.customer} • <span className="font-mono">{sale.guild}</span>
+                        Customer: <span className="text-moonlight">{sale.customer}</span> • <span className="font-mono">{sale.guild}</span>
                       </p>
                     </div>
                   </div>
@@ -297,10 +297,10 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
           )}
         </Card>
 
-        {/* Recent Anomalies */}
+        {/* Recent Alerts */}
         <Card
-          title="Active Strange Disturbances"
-          subtitle="Aetheric fluctuations, seal ruptures and stock decay"
+          title="Unusual Activity & Alerts"
+          subtitle="Unexpected consumption spikes, leaks, and inventory shortages"
           action={
             <Button
               variant="ghost"
@@ -308,15 +308,15 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
               icon={ArrowRight}
               onClick={() => setActiveTab('happenings')}
             >
-              Examine Log
+              View All Alerts
             </Button>
           }
         >
           {recentAnomalies.length === 0 ? (
             <EmptyState
               icon={Sparkles}
-              title="Aetheric Balance Optimal"
-              description="No strange happenings detected across the vaults."
+              title="All Inventory Systems Normal"
+              description="No unusual consumption spikes or discrepancies detected."
             />
           ) : (
             <div className="space-y-3">
@@ -329,7 +329,7 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-moonlight">{anom.title}</span>
                       <Badge variant={anom.severity === 'CRITICAL' ? 'curse' : 'potion'} size="sm">
-                        {anom.severity}
+                        {anom.severity} PRIORITY
                       </Badge>
                     </div>
                     <p className="text-moonlight-muted text-[11px] leading-relaxed">
@@ -345,4 +345,3 @@ export default function OverviewPage({ onOpenRecordSale, onOpenRestock }) {
     </div>
   );
 }
-

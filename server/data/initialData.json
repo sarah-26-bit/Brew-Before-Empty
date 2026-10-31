@@ -127,7 +127,7 @@
       "name": "Elixir of Astral Clarity",
       "tier": "Tier III Grand Master",
       "price": 380.00,
-      "description": "Heightens arcane cognition and allows glimpse into parallel timelines.",
+      "description": "Heightens mental focus and clarity during difficult tasks.",
       "recipe": [
         { "ingredientId": "ing-2", "ingredientName": "Moonlit Dewdrops", "quantity": 4, "unit": "fl. oz" },
         { "ingredientId": "ing-8", "ingredientName": "Starlight Nectar", "quantity": 2, "unit": "fl. oz" },
@@ -139,7 +139,7 @@
       "name": "Phoenix Rebirth Draught",
       "tier": "Tier IV Supreme",
       "price": 850.00,
-      "description": "Instantly reverses cellular entropy and restores vigor after grave peril.",
+      "description": "Premium restorative draught that quickly revitalizes energy and stamina.",
       "recipe": [
         { "ingredientId": "ing-3", "ingredientName": "Phoenix Feather Ash", "quantity": 2, "unit": "pinches" },
         { "ingredientId": "ing-4", "ingredientName": "Mandragora Root Essence", "quantity": 3, "unit": "vials" },
@@ -151,7 +151,7 @@
       "name": "Nocturnal Sight Philter",
       "tier": "Tier I Apprentice",
       "price": 95.00,
-      "description": "Grants piercing vision through magical darkness and thick fog.",
+      "description": "Enables sharp night vision through dark mist and nighttime fog.",
       "recipe": [
         { "ingredientId": "ing-6", "ingredientName": "Glow-Spore Mycelium", "quantity": 15, "unit": "grams" },
         { "ingredientId": "ing-2", "ingredientName": "Moonlit Dewdrops", "quantity": 3, "unit": "fl. oz" }
@@ -162,7 +162,7 @@
       "name": "Tidecaller's Ward Potion",
       "tier": "Tier II Adept",
       "price": 260.00,
-      "description": "Surrounds the bearer in hydrostatic shields capable of dampening kinetic blasts.",
+      "description": "Creates an protective aura shielding against heavy impacts.",
       "recipe": [
         { "ingredientId": "ing-5", "ingredientName": "Abyssal Pearl Dust", "quantity": 3, "unit": "drams" },
         { "ingredientId": "ing-7", "ingredientName": "Ectoplasmic Resin", "quantity": 2, "unit": "fl. oz" }
@@ -177,7 +177,7 @@
       "potionName": "Elixir of Astral Clarity",
       "quantity": 2,
       "totalGold": 760.00,
-      "customer": "Archmage Valerius",
+      "customer": "Master Valerius",
       "guild": "Arcane Order of Oakhaven",
       "ingredientsDeducted": [
         { "ingredientName": "Moonlit Dewdrops", "amount": 8, "unit": "fl. oz" },
@@ -206,7 +206,7 @@
       "potionName": "Phoenix Rebirth Draught",
       "quantity": 1,
       "totalGold": 850.00,
-      "customer": "High Paladin Gerald",
+      "customer": "Paladin Gerald",
       "guild": "Solar Sunforged",
       "ingredientsDeducted": [
         { "ingredientName": "Phoenix Feather Ash", "amount": 2, "unit": "pinches" },
@@ -221,8 +221,8 @@
       "potionName": "Tidecaller's Ward Potion",
       "quantity": 2,
       "totalGold": 520.00,
-      "customer": "Captain Bran of the Coral Fleet",
-      "guild": "Saltmarsh Syndicate",
+      "customer": "Captain Bran",
+      "guild": "Saltmarsh Guild",
       "ingredientsDeducted": [
         { "ingredientName": "Abyssal Pearl Dust", "amount": 6, "unit": "drams" },
         { "ingredientName": "Ectoplasmic Resin", "amount": 4, "unit": "fl. oz" }
@@ -232,47 +232,47 @@
   "anomalies": [
     {
       "id": "anom-1",
-      "title": "Abnormal Ectoplasmic Dissipation",
+      "title": "Unusual Drop in Ectoplasmic Resin",
       "ingredientId": "ing-7",
       "ingredientName": "Ectoplasmic Resin",
       "severity": "CRITICAL",
       "detectedAt": "2026-10-31T21:05:00Z",
-      "description": "Vault B ethereal condensation seal ruptured. Depletion velocity is 380% higher than logged recipe consumption.",
-      "anomalyType": "Spectral Leakage",
+      "description": "Storage Room B seal issue suspected. Depletion rate is 3.8x higher than recorded recipe sales.",
+      "anomalyType": "Unexpected Loss / Leak",
       "status": "ACTIVE",
-      "recommendedAction": "Apply Seal of Severance and cast immediate restock spell."
+      "recommendedAction": "Inspect container seal in Storage Room B and order restock immediately."
     },
     {
       "id": "anom-2",
-      "title": "Wyrmfang Dragon Scale Deficit",
+      "title": "Low Stock Warning: Dragon Scale Powder",
       "ingredientId": "ing-1",
       "ingredientName": "Dragon Scale Powder",
       "severity": "HIGH",
       "detectedAt": "2026-10-31T19:30:00Z",
-      "description": "Current stock is 42 drams against minimum safe threshold of 50 drams. Supplier delayed due to mountain blizzard.",
+      "description": "Current stock is 42 drams, below the safe minimum threshold of 50 drams. Supplier delivery is slightly delayed.",
       "anomalyType": "Stockout Risk",
       "status": "ACTIVE",
-      "recommendedAction": "Invoke emergency courier or allocate available powder to high-margin clarities."
+      "recommendedAction": "Request expedited delivery from supplier or reserve remaining powder for high-margin orders."
     },
     {
       "id": "anom-3",
-      "title": "Phoenix Ash Moisture Fluctuation",
+      "title": "Storage Temperature Fluctuated: Phoenix Ash",
       "ingredientId": "ing-3",
       "ingredientName": "Phoenix Feather Ash",
       "severity": "MEDIUM",
       "detectedAt": "2026-10-31T14:15:00Z",
-      "description": "Cinder canister ambient temperature dropped 4°C below ignition baseline. Spoilage risk imminent within 48h.",
-      "anomalyType": "Thermal Degradation",
+      "description": "Storage canister temperature dropped 4°C below standard. Potential moisture risk if left unchecked.",
+      "anomalyType": "Storage Issue",
       "status": "RESOLVED",
-      "recommendedAction": "Heated runes recalibrated by Pyromancer in charge."
+      "recommendedAction": "Heating elements inspected and adjusted by store technician."
     }
   ],
   "curseState": {
     "active": true,
-    "name": "Blood Moon Necrotic Surge",
-    "curseLevel": "Phase III — Penumbral Decay",
+    "name": "Blood Moon Festival Rush",
+    "curseLevel": "Peak Festival Demand",
     "multiplier": 1.75,
-    "description": "Under the Halloween full moon, arcane consumption increases by 75% while delivery couriers face spectral disruption.",
+    "description": "During the Halloween full moon period, customer demand increases by +75% across popular ingredients.",
     "affectedIngredients": ["Dragon Scale Powder", "Ectoplasmic Resin", "Phoenix Feather Ash"],
     "wardingStrength": "64%",
     "spoilageRate": "+32%"
@@ -289,4 +289,3 @@
     "autoWardingDefense": false
   }
 }
-
