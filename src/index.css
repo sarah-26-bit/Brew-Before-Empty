@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-midnight: #100B19;
+    --color-arcane: #8B5CF6;
+    --color-potion: #FF8A32;
+    --color-enchanted: #78D66B;
+    --color-curse: #FF5268;
+    --color-moonlight: #F3EBDD;
+  }
+
+  body {
+    background-color: #100B19;
+    color: #F3EBDD;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #100B19;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2E2246;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8B5CF6;
+  }
+}
+
+@layer utilities {
+  .text-gradient-arcane {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-arcane via-purple-300 to-potion;
+  }
+
+  .text-gradient-potion {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-potion via-amber-300 to-enchanted;
+  }
+
+  .text-gradient-curse {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-curse via-rose-400 to-potion;
+  }
+
+  .glass-card {
+    @apply bg-midnight-surface/80 backdrop-blur-md border border-midnight-border/70 rounded-2xl shadow-xl transition-all duration-300;
+  }
+
+  .glass-card-hover {
+    @apply glass-card hover:border-arcane/50 hover:shadow-arcane-sm transition-all duration-300;
+  }
+
+  .glow-border {
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.15);
+  }
+}
