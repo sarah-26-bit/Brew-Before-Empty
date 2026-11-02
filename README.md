@@ -1,8 +1,8 @@
-# SPELLSTOCK (Brew Before Empty) 🔮✨
+# BREW BEFORE EMPTY🔮✨
 > **The Magic of Intelligent Inventory — Predict. Prepare. Prosper.**  
 > *Developed for Hack-O-Lantern 2026*
 
-SPELLSTOCK is an AI-powered alchemical inventory management and predictive demand intelligence platform. Designed for both desktop workstations and mobile devices, it bridges high-performance supply-chain algorithms with rich fantasy lore. It predicts ingredient depletion, simulates seasonal demand spikes (e.g. Blood Moon Festival), tracks potion recipes with automated multi-ingredient deductions upon sales, detects anomalies (theft/leakage), and features an AI chatbot assistant.
+BREW-BEFORE-EMPTY is an AI-powered alchemical inventory management and predictive demand intelligence platform. Designed for both desktop workstations and mobile devices, it bridges high-performance supply-chain algorithms with rich fantasy lore. It predicts ingredient depletion, simulates seasonal demand spikes (e.g. Blood Moon Festival), tracks potion recipes with automated multi-ingredient deductions upon sales, detects anomalies (theft/leakage), and features an AI chatbot assistant.
 
 ---
 
@@ -38,7 +38,7 @@ SPELLSTOCK is an AI-powered alchemical inventory management and predictive deman
 
 ## 🎨 Official Brand Identity & Design System
 
-- **Product Name**: SPELLSTOCK / Brew Before Empty
+- **Product Name**:BREW BEFORE EMPTY
 - **Tagline**: Predict. Prepare. Prosper.
 - **Visual Theme**: Dark Botanical Glassmorphism
 
