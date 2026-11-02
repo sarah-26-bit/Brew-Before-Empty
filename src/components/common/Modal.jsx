@@ -29,27 +29,27 @@ export default function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-midnight-900/80 backdrop-blur-md transition-opacity animate-in fade-in duration-200"
+        className="fixed inset-0 bg-midnight-900/85 backdrop-blur-md transition-opacity animate-in fade-in duration-200"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
       <div
-        className={`relative z-10 w-full ${maxWidth} bg-midnight-surface border border-midnight-border rounded-2xl shadow-2xl shadow-purple-950/50 overflow-hidden transform transition-all duration-300 animate-in zoom-in-95`}
+        className={`relative z-10 w-full ${maxWidth} bg-midnight-surface border border-forest-border rounded-2xl shadow-2xl shadow-black/80 overflow-hidden transform transition-all duration-300 animate-in zoom-in-95`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-midnight-border/70 bg-midnight-card/50">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-forest-border/80 bg-forest-card/60">
           <div>
-            <h2 className="font-display font-bold text-xl text-moonlight tracking-wide">
+            <h2 className="font-serif font-bold text-xl text-ivory tracking-wide">
               {title}
             </h2>
             {subtitle && (
-              <p className="text-xs text-moonlight-muted mt-1">{subtitle}</p>
+              <p className="text-xs text-sage mt-1">{subtitle}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-moonlight-muted hover:text-moonlight hover:bg-midnight-border/40 rounded-xl transition-colors"
+            className="p-2 text-ivory-muted hover:text-ivory hover:bg-forest-border/40 rounded-xl transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -63,4 +63,3 @@ export default function Modal({
     </div>
   );
 }
-

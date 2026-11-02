@@ -7,6 +7,8 @@ import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import ErrorBanner from '../components/common/ErrorBanner';
 import EmptyState from '../components/common/EmptyState';
 import IngredientModal from '../components/modals/IngredientModal';
+import IngredientDetailsDrawer from '../components/pantry/IngredientDetailsDrawer';
+import { getIngredientArtwork } from '../assets/illustrations/ingredients';
 import { useInventory } from '../context/InventoryContext';
 import {
   Plus,
@@ -19,6 +21,11 @@ import {
   CheckCircle2,
   Clock,
   Sparkles,
+  LayoutGrid,
+  List,
+  Eye,
+  ArrowRight,
+  TrendingDown
 } from 'lucide-react';
 
 export default function PotionPantryPage() {
@@ -27,14 +34,18 @@ export default function PotionPantryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // View Mode: 'grid' or 'table'
+  const [viewMode, setViewMode] = useState('grid');
+
   // Filters & Search
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
 
-  // Modals
+  // Modals & Drawers
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIngredient, setEditingIngredient] = useState(null);
+  const [drawerIngredient, setDrawerIngredient] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
 
   const fetchIngredients = async () => {
@@ -46,7 +57,7 @@ export default function PotionPantryPage() {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-        'Failed to load ingredients from the SPELLSTOCK backend.'
+        'Failed to load ingredients from the Brew Before Empty backend.'
       );
     } finally {
       setLoading(false);
@@ -83,6 +94,10 @@ export default function PotionPantryPage() {
     setIsModalOpen(true);
   };
 
+  const handleOpenDrawer = (ing) => {
+    setDrawerIngredient(ing);
+  };
+
   // Categories list
   const categories = ['ALL', ...new Set(ingredients.map((i) => i.category))];
 
@@ -107,7 +122,7 @@ export default function PotionPantryPage() {
 
   return (
     <div className="space-y-6">
-      {/* Action Header & Search */}
+      {/* Header Bar: Search, View Switcher, Add Ingredient */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         {/* Search */}
         <div className="relative flex-1 max-w-md">
@@ -121,16 +136,44 @@ export default function PotionPantryPage() {
           />
         </div>
 
-        {/* Add Ingredient Button */}
-        <Button
-          variant="primary"
-          size="md"
-          icon={Plus}
-          onClick={handleAddNew}
-          className="shrink-0"
-        >
-          Add New Ingredient
-        </Button>
+        <div className="flex items-center gap-3">
+          {/* Grid / Table Toggle */}
+          <div className="flex items-center p-1 rounded-xl bg-midnight-surface border border-midnight-border">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-1.5 rounded-lg transition-all ${
+                viewMode === 'grid'
+                  ? 'bg-midnight-card text-arcane-light shadow-sm'
+                  : 'text-moonlight-muted hover:text-moonlight'
+              }`}
+              title="Gallery Grid View"
+            >
+              <LayoutGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('table')}
+              className={`p-1.5 rounded-lg transition-all ${
+                viewMode === 'table'
+                  ? 'bg-midnight-card text-arcane-light shadow-sm'
+                  : 'text-moonlight-muted hover:text-moonlight'
+              }`}
+              title="Table View"
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Add Ingredient Button */}
+          <Button
+            variant="primary"
+            size="md"
+            icon={Plus}
+            onClick={handleAddNew}
+            className="shrink-0"
+          >
+            Add New Ingredient
+          </Button>
+        </div>
       </div>
 
       {/* Filter Tabs */}
@@ -177,7 +220,7 @@ export default function PotionPantryPage() {
 
       {/* Main Content Area */}
       {loading ? (
-        <LoadingSkeleton type="table" count={6} />
+        <LoadingSkeleton type={viewMode === 'grid' ? 'cards' : 'table'} count={6} />
       ) : error ? (
         <ErrorBanner message={error} onRetry={fetchIngredients} />
       ) : filtered.length === 0 ? (
@@ -187,7 +230,7 @@ export default function PotionPantryPage() {
           description={
             searchTerm || selectedCategory !== 'ALL' || selectedStatus !== 'ALL'
               ? 'No ingredients match your current search and filter settings.'
-              : 'Your Potion Pantry is currently empty. Click "Add New Ingredient" to get started.'
+              : 'Your inventory vault is currently empty. Click "Add New Ingredient" to get started.'
           }
           actionLabel={searchTerm ? 'Clear Search' : 'Add First Ingredient'}
           onAction={() => {
@@ -200,13 +243,136 @@ export default function PotionPantryPage() {
             }
           }}
         />
+      ) : viewMode === 'grid' ? (
+        /* GALLERY GRID VIEW (Pictorial rich presentation) */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {filtered.map((ing) => {
+            const stockRatio = Math.min(100, Math.round((ing.currentStock / (ing.minThreshold * 2)) * 100));
+            const isCritical = ing.stockStatus === 'CRITICAL' || ing.stockStatus === 'OUT_OF_STOCK';
+
+            return (
+              <div
+                key={ing.id}
+                onClick={() => handleOpenDrawer(ing)}
+                className="group relative rounded-2xl bg-midnight-card border border-midnight-border hover:border-arcane/60 p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer flex flex-col justify-between overflow-hidden"
+              >
+                {/* Ambient Card Background Glow */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-arcane/5 group-hover:bg-arcane/15 rounded-full blur-2xl transition-colors pointer-events-none" />
+
+                {/* Top Bar: Category & Status */}
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <Badge variant="arcane" size="sm">
+                      {ing.category}
+                    </Badge>
+                    <Badge
+                      variant={
+                        isCritical
+                          ? 'curse'
+                          : ing.isLowStock
+                          ? 'potion'
+                          : 'enchanted'
+                      }
+                      size="sm"
+                    >
+                      {isCritical ? 'CRITICAL' : ing.isLowStock ? 'LOW STOCK' : 'HEALTHY'}
+                    </Badge>
+                  </div>
+
+                  {/* Realistic Illustration Centrepiece */}
+                  <div className="w-full h-32 rounded-xl bg-midnight/70 border border-midnight-border/80 flex items-center justify-center p-2 mb-3 group-hover:border-arcane/30 transition-all">
+                    {getIngredientArtwork(ing.name, ing.category, 'w-24 h-24 transition-transform duration-300 group-hover:scale-105', ing.visualArchetype)}
+                  </div>
+
+                  {/* Name and Supplier */}
+                  <h3 className="text-base font-serif font-bold text-moonlight group-hover:text-arcane-light transition-colors line-clamp-1">
+                    {ing.name}
+                  </h3>
+                  <p className="text-[11px] text-moonlight-muted mt-0.5 truncate">
+                    Supplier: {ing.supplier}
+                  </p>
+                </div>
+
+                {/* Stock Meter & Numbers */}
+                <div className="mt-4 pt-3 border-t border-midnight-border/60 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-mono">
+                    <span className="text-moonlight-muted">Quantity:</span>
+                    <span className={`font-bold ${ing.isLowStock ? 'text-curse' : 'text-moonlight'}`}>
+                      {ing.currentStock} {ing.unit}
+                    </span>
+                  </div>
+
+                  {/* Visual Progress Bar */}
+                  <div className="w-full h-1.5 bg-midnight rounded-full overflow-hidden border border-midnight-border/50">
+                    <div
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        ing.currentStock <= ing.minThreshold * 0.5
+                          ? 'bg-curse shadow-curse-glow'
+                          : ing.isLowStock
+                          ? 'bg-potion shadow-potion-glow'
+                          : 'bg-enchanted shadow-enchanted-glow'
+                      }`}
+                      style={{ width: `${stockRatio}%` }}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] text-moonlight-muted pt-1">
+                    <span>
+                      {ing.daysRemaining !== undefined ? `${ing.daysRemaining} days left` : `Safe min: ${ing.minThreshold}`}
+                    </span>
+                    <span className="font-mono text-potion-light font-semibold">
+                      {ing.costPerUnit} ⟡
+                    </span>
+                  </div>
+
+                  {/* Hover Quick Actions */}
+                  <div className="pt-2 flex items-center justify-between gap-1 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenDrawer(ing);
+                      }}
+                      className="text-[11px] text-arcane-light hover:text-white flex items-center gap-1 font-medium"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      View Dossier
+                    </button>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(ing);
+                        }}
+                        className="p-1 text-moonlight-muted hover:text-arcane-light rounded"
+                        title="Edit"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(ing.id, ing.name);
+                        }}
+                        className="p-1 text-moonlight-muted hover:text-curse rounded"
+                        title="Delete"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
+        /* TABLE VIEW (Upgraded with illustration thumbnails) */
         <Card headerBorder={false} className="p-0 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-midnight-card/80 border-b border-midnight-border text-moonlight-muted font-mono uppercase tracking-wider">
                 <tr>
-                  <th className="py-3.5 px-4 font-semibold">Ingredient Details</th>
+                  <th className="py-3.5 px-4 font-semibold">Ingredient</th>
                   <th className="py-3.5 px-4 font-semibold">Category</th>
                   <th className="py-3.5 px-4 font-semibold">Current Stock Level</th>
                   <th className="py-3.5 px-4 font-semibold">Stock Status</th>
@@ -222,33 +388,39 @@ export default function PotionPantryPage() {
                   return (
                     <tr
                       key={ing.id}
-                      className="hover:bg-midnight-card/40 transition-colors group"
+                      onClick={() => handleOpenDrawer(ing)}
+                      className="hover:bg-midnight-card/40 transition-colors group cursor-pointer"
                     >
-                      {/* Name & Purity */}
-                      <td className="py-4 px-4 font-medium text-moonlight">
-                        <div>
-                          <span className="text-sm font-semibold group-hover:text-arcane-light transition-colors">
-                            {ing.name}
-                          </span>
-                          <div className="flex items-center gap-2 mt-0.5 text-[10px] text-moonlight-muted">
-                            <span className="font-mono">Purity: {ing.purity}</span>
-                            <span>•</span>
-                            <span className="text-potion-light">{ing.rarity}</span>
-                            <span>•</span>
-                            <span>Supplier: {ing.supplier}</span>
+                      {/* Name & Artwork Thumbnail */}
+                      <td className="py-3 px-4 font-medium text-moonlight">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-midnight border border-midnight-border/80 flex items-center justify-center p-1 shrink-0">
+                            {getIngredientArtwork(ing.name, ing.category, 'w-8 h-8', ing.visualArchetype)}
+                          </div>
+                          <div>
+                            <span className="text-sm font-semibold group-hover:text-arcane-light transition-colors">
+                              {ing.name}
+                            </span>
+                            <div className="flex items-center gap-2 mt-0.5 text-[10px] text-moonlight-muted">
+                              <span className="font-mono">Purity: {ing.purity}</span>
+                              <span>•</span>
+                              <span className="text-potion-light">{ing.rarity}</span>
+                              <span>•</span>
+                              <span>Supplier: {ing.supplier}</span>
+                            </div>
                           </div>
                         </div>
                       </td>
 
                       {/* Category */}
-                      <td className="py-4 px-4 font-mono text-moonlight-muted">
+                      <td className="py-3 px-4 font-mono text-moonlight-muted">
                         <span className="px-2 py-0.5 rounded-md bg-midnight-card border border-midnight-border text-[11px]">
                           {ing.category}
                         </span>
                       </td>
 
                       {/* Stock Level with Progress Bar */}
-                      <td className="py-4 px-4 font-mono">
+                      <td className="py-3 px-4 font-mono">
                         <div className="space-y-1.5 w-36">
                           <div className="flex items-center justify-between text-[11px]">
                             <span className={`font-bold ${ing.isLowStock ? 'text-curse' : 'text-moonlight'}`}>
@@ -275,7 +447,7 @@ export default function PotionPantryPage() {
                       </td>
 
                       {/* Status Warning Badge */}
-                      <td className="py-4 px-4">
+                      <td className="py-3 px-4">
                         <Badge
                           variant={
                             ing.stockStatus === 'CRITICAL' || ing.stockStatus === 'OUT_OF_STOCK'
@@ -291,12 +463,12 @@ export default function PotionPantryPage() {
                       </td>
 
                       {/* Daily Consumption */}
-                      <td className="py-4 px-4 font-mono text-moonlight-muted">
+                      <td className="py-3 px-4 font-mono text-moonlight-muted">
                         <span>{ing.effectiveDailyConsumption} {ing.unit}/day</span>
                       </td>
 
                       {/* Days Remaining & Stockout Date */}
-                      <td className="py-4 px-4 font-mono">
+                      <td className="py-3 px-4 font-mono">
                         <div className="text-[11px]">
                           <span
                             className={`font-semibold ${
@@ -312,18 +484,18 @@ export default function PotionPantryPage() {
                       </td>
 
                       {/* Cost */}
-                      <td className="py-4 px-4 font-mono text-moonlight">
+                      <td className="py-3 px-4 font-mono text-moonlight">
                         <span className="font-semibold text-potion-light">
                           {ing.costPerUnit} ⟡
                         </span>
                         <span className="text-[10px] text-moonlight-muted block">
-                          Total Value: {(ing.currentStock * ing.costPerUnit).toFixed(0)} ⟡
+                          Total: {(ing.currentStock * ing.costPerUnit).toFixed(0)} ⟡
                         </span>
                       </td>
 
                       {/* Actions */}
-                      <td className="py-4 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
+                      <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5" onClick={(e) => e.stopPropagation()}>
                           <button
                             onClick={() => handleEdit(ing)}
                             title="Edit Ingredient"
@@ -349,6 +521,15 @@ export default function PotionPantryPage() {
           </div>
         </Card>
       )}
+
+      {/* Ingredient Details Drawer */}
+      <IngredientDetailsDrawer
+        ingredient={drawerIngredient}
+        isOpen={Boolean(drawerIngredient)}
+        onClose={() => setDrawerIngredient(null)}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       {/* Ingredient Add/Edit Modal */}
       <IngredientModal

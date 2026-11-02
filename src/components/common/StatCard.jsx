@@ -7,16 +7,20 @@ export default function StatCard({
   value,
   subtitle,
   icon: Icon,
-  variant = 'arcane', // 'arcane', 'potion', 'enchanted', 'curse'
+  variant = 'gold', // 'gold', 'emerald', 'amber', 'critical'
   trend,
   trendPositive,
   onClick,
 }) {
   const iconVariants = {
-    arcane: 'bg-arcane/20 text-arcane-light border border-arcane/40 shadow-arcane-sm',
-    potion: 'bg-potion/20 text-potion-light border border-potion/40 shadow-potion-glow',
-    enchanted: 'bg-enchanted/20 text-enchanted-light border border-enchanted/40 shadow-enchanted-glow',
-    curse: 'bg-curse/20 text-curse-light border border-curse/40 shadow-curse-glow',
+    gold: 'bg-gold/15 text-gold-light border border-gold/40 shadow-gold-sm',
+    potion: 'bg-gold/15 text-gold-light border border-gold/40 shadow-gold-sm',
+    emerald: 'bg-emerald/20 text-emerald-light border border-emerald/40 shadow-emerald-sm',
+    enchanted: 'bg-emerald/20 text-emerald-light border border-emerald/40 shadow-emerald-sm',
+    arcane: 'bg-emerald/20 text-emerald-light border border-emerald/40 shadow-emerald-sm',
+    amber: 'bg-amber/20 text-amber-light border border-amber/40 shadow-amber-glow',
+    critical: 'bg-critical/20 text-critical-light border border-critical/40 shadow-critical-glow',
+    curse: 'bg-critical/20 text-critical-light border border-critical/40 shadow-critical-glow',
   };
 
   return (
@@ -27,35 +31,41 @@ export default function StatCard({
       onClick={onClick}
       className={`relative overflow-hidden group ${onClick ? 'cursor-pointer' : ''}`}
     >
-      {/* Subtle ambient gradient mesh in card corner */}
+      {/* Subtle ambient botanical gradient in card corner */}
       <div
         className={`absolute -right-10 -top-10 w-28 h-28 rounded-full blur-2xl opacity-15 pointer-events-none transition-all group-hover:scale-125 group-hover:opacity-30 ${
-          variant === 'potion' ? 'bg-potion' : variant === 'curse' ? 'bg-curse' : variant === 'enchanted' ? 'bg-enchanted' : 'bg-arcane'
+          variant === 'critical' || variant === 'curse'
+            ? 'bg-critical'
+            : variant === 'amber'
+            ? 'bg-amber'
+            : variant === 'emerald' || variant === 'enchanted' || variant === 'arcane'
+            ? 'bg-emerald'
+            : 'bg-gold'
         }`}
       />
 
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-xs uppercase tracking-wider font-semibold text-moonlight-muted">
+          <p className="text-xs uppercase tracking-wider font-semibold text-sage">
             {title}
           </p>
-          <div className="mt-2 text-3xl font-display font-bold text-moonlight tracking-tight flex items-baseline gap-2">
+          <div className="mt-2 text-2xl sm:text-3xl font-serif font-bold text-ivory tracking-tight flex items-baseline gap-2">
             <span>{value}</span>
           </div>
         </div>
 
         {Icon && (
-          <div className={`p-3 rounded-xl ${iconVariants[variant]} transition-transform duration-300 group-hover:scale-110`}>
+          <div className={`p-3 rounded-xl ${iconVariants[variant] || iconVariants.gold} transition-transform duration-300 group-hover:scale-110`}>
             <Icon className="w-5 h-5" />
           </div>
         )}
       </div>
 
       {(subtitle || trend) && (
-        <div className="mt-4 flex items-center justify-between text-xs pt-3 border-t border-midnight-border/40">
-          <span className="text-moonlight-muted">{subtitle}</span>
+        <div className="mt-4 flex items-center justify-between text-xs pt-3 border-t border-forest-border/50">
+          <span className="text-ivory-muted">{subtitle}</span>
           {trend && (
-            <Badge variant={trendPositive ? 'enchanted' : 'curse'} size="sm">
+            <Badge variant={trendPositive ? 'emerald' : 'critical'} size="sm">
               {trend}
             </Badge>
           )}
@@ -64,4 +74,3 @@ export default function StatCard({
     </Card>
   );
 }
-

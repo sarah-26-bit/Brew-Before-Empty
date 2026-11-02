@@ -8,6 +8,7 @@ import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import ErrorBanner from '../components/common/ErrorBanner';
 import EmptyState from '../components/common/EmptyState';
 import RecordSaleModal from '../components/modals/RecordSaleModal';
+import { getPotionArtwork } from '../assets/illustrations/potions';
 import { useInventory } from '../context/InventoryContext';
 import {
   Receipt,
@@ -139,8 +140,8 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 {/* Left: Transaction Info */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-potion/15 border border-potion/30 flex items-center justify-center text-potion-light shrink-0">
-                    <span className="font-mono font-bold text-sm">{sale.quantity}x</span>
+                  <div className="w-14 h-14 rounded-2xl bg-midnight border border-arcane/20 flex items-center justify-center p-1.5 shrink-0 shadow-inner">
+                    {getPotionArtwork(sale.potionName, 'w-11 h-11')}
                   </div>
 
                   <div>
@@ -149,7 +150,10 @@ export default function SalesTransactionsPage({ isRecordModalOpen, setIsRecordMo
                         {sale.potionName}
                       </h4>
                       <Badge variant="potion" size="sm">
-                        Order #{sale.id}
+                        Qty: {sale.quantity}x
+                      </Badge>
+                      <Badge variant="arcane" size="sm">
+                        #{sale.id}
                       </Badge>
                     </div>
 

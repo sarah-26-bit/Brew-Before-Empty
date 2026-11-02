@@ -2,17 +2,22 @@ import React from 'react';
 
 export default function Badge({ children, variant = 'default', size = 'md', className = '' }) {
   const variantStyles = {
-    default: 'bg-midnight-border text-moonlight-muted border-midnight-border/80',
-    arcane: 'bg-arcane/15 text-arcane-light border-arcane/40 shadow-sm shadow-arcane/10',
-    potion: 'bg-potion/15 text-potion-light border-potion/40 shadow-sm shadow-potion/10',
-    enchanted: 'bg-enchanted/15 text-enchanted-light border-enchanted/40 shadow-sm shadow-enchanted/10',
-    curse: 'bg-curse/15 text-curse-light border-curse/40 shadow-sm shadow-curse/10 animate-pulse-subtle',
-    moonlight: 'bg-moonlight/10 text-moonlight border-moonlight/30',
+    default: 'bg-forest-border/60 text-ivory-muted border-forest-border/80',
+    emerald: 'bg-emerald/15 text-sage-light border-emerald/40 shadow-sm shadow-emerald/10',
+    arcane: 'bg-emerald/15 text-sage-light border-emerald/40 shadow-sm shadow-emerald/10',
+    gold: 'bg-gold/15 text-gold-light border-gold/40 shadow-sm shadow-gold/10 font-semibold',
+    potion: 'bg-gold/15 text-gold-light border-gold/40 shadow-sm shadow-gold/10 font-semibold',
+    amber: 'bg-amber/15 text-amber-light border-amber/40 shadow-sm shadow-amber/10',
+    curse: 'bg-critical/15 text-critical-light border-critical/40 shadow-sm shadow-critical/10',
+    critical: 'bg-critical/15 text-critical-light border-critical/40 shadow-sm shadow-critical/10',
+    enchanted: 'bg-emerald/15 text-sage-light border-emerald/40 shadow-sm shadow-emerald/10',
+    sage: 'bg-sage/15 text-sage-light border-sage/40',
+    ivory: 'bg-ivory/10 text-ivory border-ivory/30',
   };
 
   const sizeStyles = {
-    sm: 'text-xs px-2 py-0.5',
-    md: 'text-xs font-semibold px-2.5 py-1',
+    sm: 'text-[11px] px-2 py-0.5',
+    md: 'text-xs font-medium px-2.5 py-1',
     lg: 'text-sm font-semibold px-3 py-1.5',
   };
 
@@ -24,4 +29,3 @@ export default function Badge({ children, variant = 'default', size = 'md', clas
     </span>
   );
 }
-

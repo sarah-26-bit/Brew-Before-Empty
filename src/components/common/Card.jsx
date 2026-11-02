@@ -7,32 +7,35 @@ export default function Card({
   subtitle,
   action,
   glow = false,
-  glowColor = 'arcane',
+  glowColor = 'gold', // 'gold', 'emerald', 'amber', 'critical'
   headerBorder = true,
   ...props
 }) {
   const glowStyles = {
-    arcane: 'hover:border-arcane/50 hover:shadow-arcane-sm',
-    potion: 'hover:border-potion/50 hover:shadow-potion-glow',
-    curse: 'hover:border-curse/50 hover:shadow-curse-glow',
-    enchanted: 'hover:border-enchanted/50 hover:shadow-enchanted-glow',
+    gold: 'hover:border-gold/50 hover:shadow-gold-sm',
+    emerald: 'hover:border-emerald/50 hover:shadow-emerald-sm',
+    amber: 'hover:border-amber/50 hover:shadow-amber-glow',
+    critical: 'hover:border-critical/50 hover:shadow-critical-glow',
+    arcane: 'hover:border-emerald/50 hover:shadow-emerald-sm',
+    potion: 'hover:border-gold/50 hover:shadow-gold-sm',
+    curse: 'hover:border-critical/50 hover:shadow-critical-glow',
   };
 
   return (
     <div
-      className={`glass-card p-6 ${glow ? glowStyles[glowColor] : ''} ${className}`}
+      className={`glass-card p-6 ${glow ? glowStyles[glowColor] || glowStyles.gold : ''} ${className}`}
       {...props}
     >
       {(title || action) && (
-        <div className={`flex items-start justify-between gap-4 pb-4 ${headerBorder ? 'border-b border-midnight-border/60 mb-5' : 'mb-3'}`}>
+        <div className={`flex items-start justify-between gap-4 pb-4 ${headerBorder ? 'border-b border-forest-border/70 mb-5' : 'mb-3'}`}>
           <div>
             {title && (
-              <h3 className="font-display font-bold text-lg text-moonlight tracking-wide flex items-center gap-2">
+              <h3 className="font-serif font-bold text-lg text-ivory tracking-wide flex items-center gap-2">
                 {title}
               </h3>
             )}
             {subtitle && (
-              <p className="text-xs text-moonlight-muted mt-0.5">{subtitle}</p>
+              <p className="text-xs text-sage mt-0.5">{subtitle}</p>
             )}
           </div>
           {action && <div className="shrink-0">{action}</div>}
@@ -42,4 +45,3 @@ export default function Card({
     </div>
   );
 }
-

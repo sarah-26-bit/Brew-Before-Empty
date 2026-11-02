@@ -1,10 +1,12 @@
 import React from 'react';
-import { Menu, Wand2, Receipt, Moon, RefreshCw } from 'lucide-react';
+import { Menu, Wand2, Receipt, Moon, RefreshCw, LogOut, User } from 'lucide-react';
 import Button from '../common/Button';
 import { useInventory } from '../../context/InventoryContext';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Header({ onMenuClick, onRecordSaleClick, onRestockClick }) {
   const { activeTab, globalCounts, triggerGlobalRefresh } = useInventory();
+  const { user, profile, logout, devGuestMode } = useAuth();
 
   const titles = {
     overview: {
@@ -22,6 +24,10 @@ export default function Header({ onMenuClick, onRecordSaleClick, onRestockClick 
     prophecy: {
       title: 'Prophecy AI Demand Forecasting',
       desc: 'Smart 7 to 14-day forecasts, stockout dates, and seasonal spike simulation.',
+    },
+    intelligence: {
+      title: 'Apothecary Intelligence Centre',
+      desc: 'Predictive forecasting, statistical consumption anomalies, and procurement advice.',
     },
     restock: {
       title: 'Smart Restock Recommendations',
@@ -113,6 +119,26 @@ export default function Header({ onMenuClick, onRecordSaleClick, onRestockClick 
           <div className="hidden xl:flex items-center gap-2 pl-3 border-l border-midnight-border/60">
             <span className="w-2 h-2 rounded-full bg-enchanted shadow-enchanted-glow animate-pulse" />
             <span className="text-xs font-mono text-moonlight-muted">System Connected</span>
+          </div>
+
+          {/* User Profile & Sign Out */}
+          <div className="flex items-center gap-2 pl-2 sm:pl-3 border-l border-midnight-border/60">
+            <div className="hidden md:flex flex-col text-right">
+              <span className="text-xs font-serif font-bold text-warm-ivory leading-tight truncate max-w-[130px]">
+                {profile?.full_name || user?.user_metadata?.full_name || (devGuestMode ? 'Guest Alchemist' : 'Alchemist')}
+              </span>
+              <span className="text-[10px] text-sage-green font-mono">
+                {profile?.role || (devGuestMode ? 'Demo Access' : 'Master')}
+              </span>
+            </div>
+
+            <button
+              onClick={logout}
+              title="Sign Out of Sanctum"
+              className="p-2 text-moonlight-muted hover:text-red-400 hover:bg-red-950/30 rounded-xl border border-midnight-border/60 transition-colors"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>

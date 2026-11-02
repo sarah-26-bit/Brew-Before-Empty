@@ -1,78 +1,67 @@
-import mongoose from 'mongoose';
+import { SupabaseService } from '../services/supabaseService.js';
+import { getDatabase, saveDatabase } from '../server/db.js';
+import { QueryPromise } from './QueryPromise.js';
 
-const consumedItemSchema = new mongoose.Schema(
-  {
-    ingredient: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Ingredient',
-      required: true,
-    },
-    ingredientName: {
-      type: String,
-      required: true,
-    },
-    quantityDeducted: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    unit: {
-      type: String,
-      required: true,
-    },
-  },
-  { _id: false }
-);
-
-const saleSchema = new mongoose.Schema(
-  {
-    saleId: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-    },
-    potion: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Potion',
-    },
-    potionName: {
-      type: String,
-      required: [true, 'Potion name is required'],
-      index: true,
-    },
-    quantity: {
-      type: Number,
-      required: [true, 'Quantity sold is required'],
-      min: [1, 'Quantity must be at least 1'],
-      default: 1,
-    },
-    totalPrice: {
-      type: Number,
-      required: true,
-      min: [0, 'Total price cannot be negative'],
-    },
-    customer: {
-      type: String,
-      trim: true,
-      default: 'Anonymous Mage',
-    },
-    guild: {
-      type: String,
-      trim: true,
-      default: 'Independent',
-    },
-    consumedIngredients: [consumedItemSchema],
-    timestamp: {
-      type: Date,
-      default: Date.now,
-      index: true,
-    },
-  },
-  {
-    timestamps: true,
+export class Sale {
+  constructor(data = {}) {
+    this._id = data._id || data.id || `TXN-${Date.now()}`;
+    this.id = this._id;
+    this.saleId = this.id;
+    this.potion = data.potion || data.potionId;
+    this.potionId = this.potion;
+    this.potionName = data.potionName || '';
+    this.quantity = Number(data.quantity || 1);
+    this.totalPrice = Number(data.totalPrice ?? data.totalGold ?? 0);
+    this.totalGold = this.totalPrice;
+    this.customer = data.customer || 'Anonymous Mage';
+    this.guild = data.guild || 'Independent';
+    this.consumedIngredients = data.consumedIngredients || data.ingredientsDeducted || [];
+    this.ingredientsDeducted = this.consumedIngredients;
+    this.timestamp = data.timestamp || data.createdAt || new Date().toISOString();
   }
-);
 
-export const Sale = mongoose.model('Sale', saleSchema);
+  async save() {
+    const db = getDatabase();
+    if (!db.sales) db.sales = [];
+    const idx = db.sales.findIndex(s => s.id === this.id || s._id === this.id);
+    if (idx >= 0) {
+      db.sales[idx] = { ...this };
+    } else {
+      db.sales.unshift({ ...this });
+    }
+    saveDatabase(db);
 
+    if (SupabaseService.isConnected()) {
+      await SupabaseService.recordSale(this);
+    }
+    return this;
+  }
+
+  static async create(data) {
+    const sale = new Sale(data);
+    await sale.save();
+    return sale;
+  }
+
+  static find(query = {}) {
+    return new QueryPromise(async () => {
+      const db = getDatabase();
+      return (db.sales || []).map(s => new Sale(s));
+    });
+  }
+
+  static async countDocuments(query = {}) {
+    const db = getDatabase();
+    return (db.sales || []).length;
+  }
+
+  static async aggregate(pipeline = []) {
+    const db = getDatabase();
+    // Simple aggregator for total sales
+    const totalGold = (db.sales || []).reduce((acc, s) => acc + (s.totalGold || s.totalPrice || 0), 0);
+    const count = (db.sales || []).length;
+    return [{ totalRevenue: totalGold, totalCount: count }];
+  }
+}
+
+export default Sale;

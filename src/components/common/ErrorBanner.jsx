@@ -4,7 +4,7 @@ import Button from './Button';
 
 export default function ErrorBanner({
   title = 'Backend Server Connection Error',
-  message = 'Unable to connect to the SPELLSTOCK backend server. Please make sure the server is running on port 5001.',
+  message = 'Unable to connect to the Brew Before Empty backend server. Please make sure the server is running on port 5001.',
   onRetry,
   isRetrying = false,
   className = '',

@@ -1,34 +1,36 @@
 {
   "ingredients": [
     {
+      "_id": "ing-1",
       "id": "ing-1",
       "name": "Dragon Scale Powder",
+      "description": "",
       "category": "Mineral & Scales",
-      "currentStock": 42,
+      "currentStock": 40,
       "unit": "drams",
       "minThreshold": 50,
-      "costPerUnit": 85.00,
+      "costPerUnit": 85,
+      "leadTimeDays": 5,
       "supplier": "Wyrmfang Smelters",
       "purity": "99.4%",
       "rarity": "Legendary",
-      "dailyConsumption": 6.2,
-      "leadTimeDays": 5,
-      "lastUpdated": "2026-10-31T20:30:00Z"
+      "dailyConsumption": 6.2
     },
     {
+      "_id": "ing-2",
       "id": "ing-2",
       "name": "Moonlit Dewdrops",
+      "description": "",
       "category": "Celestial Liquids",
-      "currentStock": 180,
+      "currentStock": 172,
       "unit": "fl. oz",
       "minThreshold": 60,
-      "costPerUnit": 14.50,
+      "costPerUnit": 14.5,
+      "leadTimeDays": 2,
       "supplier": "Silverleaf Grove",
       "purity": "98.1%",
       "rarity": "Uncommon",
-      "dailyConsumption": 12.0,
-      "leadTimeDays": 2,
-      "lastUpdated": "2026-10-31T19:15:00Z"
+      "dailyConsumption": 12
     },
     {
       "id": "ing-3",
@@ -37,7 +39,7 @@
       "currentStock": 18,
       "unit": "pinches",
       "minThreshold": 30,
-      "costPerUnit": 140.00,
+      "costPerUnit": 140,
       "supplier": "Solaris Aviary",
       "purity": "100%",
       "rarity": "Mythic",
@@ -52,7 +54,7 @@
       "currentStock": 95,
       "unit": "vials",
       "minThreshold": 40,
-      "costPerUnit": 32.00,
+      "costPerUnit": 32,
       "supplier": "Howling Vale Botanicals",
       "purity": "96.5%",
       "rarity": "Rare",
@@ -67,7 +69,7 @@
       "currentStock": 25,
       "unit": "drams",
       "minThreshold": 35,
-      "costPerUnit": 115.00,
+      "costPerUnit": 115,
       "supplier": "Trench Diver Guild",
       "purity": "97.8%",
       "rarity": "Rare",
@@ -86,7 +88,7 @@
       "supplier": "Underdark Cultivators",
       "purity": "95.0%",
       "rarity": "Common",
-      "dailyConsumption": 24.0,
+      "dailyConsumption": 24,
       "leadTimeDays": 2,
       "lastUpdated": "2026-10-31T17:40:00Z"
     },
@@ -97,7 +99,7 @@
       "currentStock": 14,
       "unit": "fl. oz",
       "minThreshold": 45,
-      "costPerUnit": 65.00,
+      "costPerUnit": 65,
       "supplier": "Hallowed Crypt Distillers",
       "purity": "91.2%",
       "rarity": "Rare",
@@ -106,19 +108,20 @@
       "lastUpdated": "2026-10-31T22:50:00Z"
     },
     {
+      "_id": "ing-8",
       "id": "ing-8",
       "name": "Starlight Nectar",
+      "description": "",
       "category": "Celestial Liquids",
-      "currentStock": 140,
+      "currentStock": 136,
       "unit": "fl. oz",
       "minThreshold": 50,
-      "costPerUnit": 48.00,
+      "costPerUnit": 48,
+      "leadTimeDays": 4,
       "supplier": "Astral Observatory",
       "purity": "99.9%",
       "rarity": "Legendary",
-      "dailyConsumption": 7.5,
-      "leadTimeDays": 4,
-      "lastUpdated": "2026-10-31T16:20:00Z"
+      "dailyConsumption": 7.5
     }
   ],
   "potions": [
@@ -126,63 +129,179 @@
       "id": "pot-1",
       "name": "Elixir of Astral Clarity",
       "tier": "Tier III Grand Master",
-      "price": 380.00,
+      "price": 380,
       "description": "Heightens mental focus and clarity during difficult tasks.",
       "recipe": [
-        { "ingredientId": "ing-2", "ingredientName": "Moonlit Dewdrops", "quantity": 4, "unit": "fl. oz" },
-        { "ingredientId": "ing-8", "ingredientName": "Starlight Nectar", "quantity": 2, "unit": "fl. oz" },
-        { "ingredientId": "ing-1", "ingredientName": "Dragon Scale Powder", "quantity": 1, "unit": "drams" }
+        {
+          "ingredientId": "ing-2",
+          "ingredientName": "Moonlit Dewdrops",
+          "quantity": 4,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredientId": "ing-8",
+          "ingredientName": "Starlight Nectar",
+          "quantity": 2,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredientId": "ing-1",
+          "ingredientName": "Dragon Scale Powder",
+          "quantity": 1,
+          "unit": "drams"
+        }
       ]
     },
     {
       "id": "pot-2",
       "name": "Phoenix Rebirth Draught",
       "tier": "Tier IV Supreme",
-      "price": 850.00,
+      "price": 850,
       "description": "Premium restorative draught that quickly revitalizes energy and stamina.",
       "recipe": [
-        { "ingredientId": "ing-3", "ingredientName": "Phoenix Feather Ash", "quantity": 2, "unit": "pinches" },
-        { "ingredientId": "ing-4", "ingredientName": "Mandragora Root Essence", "quantity": 3, "unit": "vials" },
-        { "ingredientId": "ing-1", "ingredientName": "Dragon Scale Powder", "quantity": 2, "unit": "drams" }
+        {
+          "ingredientId": "ing-3",
+          "ingredientName": "Phoenix Feather Ash",
+          "quantity": 2,
+          "unit": "pinches"
+        },
+        {
+          "ingredientId": "ing-4",
+          "ingredientName": "Mandragora Root Essence",
+          "quantity": 3,
+          "unit": "vials"
+        },
+        {
+          "ingredientId": "ing-1",
+          "ingredientName": "Dragon Scale Powder",
+          "quantity": 2,
+          "unit": "drams"
+        }
       ]
     },
     {
       "id": "pot-3",
       "name": "Nocturnal Sight Philter",
       "tier": "Tier I Apprentice",
-      "price": 95.00,
+      "price": 95,
       "description": "Enables sharp night vision through dark mist and nighttime fog.",
       "recipe": [
-        { "ingredientId": "ing-6", "ingredientName": "Glow-Spore Mycelium", "quantity": 15, "unit": "grams" },
-        { "ingredientId": "ing-2", "ingredientName": "Moonlit Dewdrops", "quantity": 3, "unit": "fl. oz" }
+        {
+          "ingredientId": "ing-6",
+          "ingredientName": "Glow-Spore Mycelium",
+          "quantity": 15,
+          "unit": "grams"
+        },
+        {
+          "ingredientId": "ing-2",
+          "ingredientName": "Moonlit Dewdrops",
+          "quantity": 3,
+          "unit": "fl. oz"
+        }
       ]
     },
     {
       "id": "pot-4",
       "name": "Tidecaller's Ward Potion",
       "tier": "Tier II Adept",
-      "price": 260.00,
+      "price": 260,
       "description": "Creates an protective aura shielding against heavy impacts.",
       "recipe": [
-        { "ingredientId": "ing-5", "ingredientName": "Abyssal Pearl Dust", "quantity": 3, "unit": "drams" },
-        { "ingredientId": "ing-7", "ingredientName": "Ectoplasmic Resin", "quantity": 2, "unit": "fl. oz" }
+        {
+          "ingredientId": "ing-5",
+          "ingredientName": "Abyssal Pearl Dust",
+          "quantity": 3,
+          "unit": "drams"
+        },
+        {
+          "ingredientId": "ing-7",
+          "ingredientName": "Ectoplasmic Resin",
+          "quantity": 2,
+          "unit": "fl. oz"
+        }
       ]
     }
   ],
   "sales": [
+    {
+      "_id": "TXN-1793487652367",
+      "id": "TXN-1793487652367",
+      "saleId": "TXN-1793487652367",
+      "potion": "pot-1",
+      "potionId": "pot-1",
+      "potionName": "Elixir of Astral Clarity",
+      "quantity": 2,
+      "totalPrice": 760,
+      "totalGold": 760,
+      "customer": "Archmage Valerius",
+      "guild": "Oakhaven Arcanum",
+      "consumedIngredients": [
+        {
+          "ingredient": "ing-2",
+          "ingredientName": "Moonlit Dewdrops",
+          "quantityDeducted": 8,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredient": "ing-8",
+          "ingredientName": "Starlight Nectar",
+          "quantityDeducted": 4,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredient": "ing-1",
+          "ingredientName": "Dragon Scale Powder",
+          "quantityDeducted": 2,
+          "unit": "drams"
+        }
+      ],
+      "ingredientsDeducted": [
+        {
+          "ingredient": "ing-2",
+          "ingredientName": "Moonlit Dewdrops",
+          "quantityDeducted": 8,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredient": "ing-8",
+          "ingredientName": "Starlight Nectar",
+          "quantityDeducted": 4,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredient": "ing-1",
+          "ingredientName": "Dragon Scale Powder",
+          "quantityDeducted": 2,
+          "unit": "drams"
+        }
+      ],
+      "timestamp": "2026-10-31T23:00:52.367Z"
+    },
     {
       "id": "TXN-8842",
       "timestamp": "2026-10-31T22:15:00Z",
       "potionId": "pot-1",
       "potionName": "Elixir of Astral Clarity",
       "quantity": 2,
-      "totalGold": 760.00,
+      "totalGold": 760,
       "customer": "Master Valerius",
       "guild": "Arcane Order of Oakhaven",
       "ingredientsDeducted": [
-        { "ingredientName": "Moonlit Dewdrops", "amount": 8, "unit": "fl. oz" },
-        { "ingredientName": "Starlight Nectar", "amount": 4, "unit": "fl. oz" },
-        { "ingredientName": "Dragon Scale Powder", "amount": 2, "unit": "drams" }
+        {
+          "ingredientName": "Moonlit Dewdrops",
+          "amount": 8,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredientName": "Starlight Nectar",
+          "amount": 4,
+          "unit": "fl. oz"
+        },
+        {
+          "ingredientName": "Dragon Scale Powder",
+          "amount": 2,
+          "unit": "drams"
+        }
       ]
     },
     {
@@ -191,12 +310,20 @@
       "potionId": "pot-3",
       "potionName": "Nocturnal Sight Philter",
       "quantity": 4,
-      "totalGold": 380.00,
+      "totalGold": 380,
       "customer": "Ranger Lyra Swiftarrow",
       "guild": "Midnight Wardens",
       "ingredientsDeducted": [
-        { "ingredientName": "Glow-Spore Mycelium", "amount": 60, "unit": "grams" },
-        { "ingredientName": "Moonlit Dewdrops", "amount": 12, "unit": "fl. oz" }
+        {
+          "ingredientName": "Glow-Spore Mycelium",
+          "amount": 60,
+          "unit": "grams"
+        },
+        {
+          "ingredientName": "Moonlit Dewdrops",
+          "amount": 12,
+          "unit": "fl. oz"
+        }
       ]
     },
     {
@@ -205,13 +332,25 @@
       "potionId": "pot-2",
       "potionName": "Phoenix Rebirth Draught",
       "quantity": 1,
-      "totalGold": 850.00,
+      "totalGold": 850,
       "customer": "Paladin Gerald",
       "guild": "Solar Sunforged",
       "ingredientsDeducted": [
-        { "ingredientName": "Phoenix Feather Ash", "amount": 2, "unit": "pinches" },
-        { "ingredientName": "Mandragora Root Essence", "amount": 3, "unit": "vials" },
-        { "ingredientName": "Dragon Scale Powder", "amount": 2, "unit": "drams" }
+        {
+          "ingredientName": "Phoenix Feather Ash",
+          "amount": 2,
+          "unit": "pinches"
+        },
+        {
+          "ingredientName": "Mandragora Root Essence",
+          "amount": 3,
+          "unit": "vials"
+        },
+        {
+          "ingredientName": "Dragon Scale Powder",
+          "amount": 2,
+          "unit": "drams"
+        }
       ]
     },
     {
@@ -220,16 +359,91 @@
       "potionId": "pot-4",
       "potionName": "Tidecaller's Ward Potion",
       "quantity": 2,
-      "totalGold": 520.00,
+      "totalGold": 520,
       "customer": "Captain Bran",
       "guild": "Saltmarsh Guild",
       "ingredientsDeducted": [
-        { "ingredientName": "Abyssal Pearl Dust", "amount": 6, "unit": "drams" },
-        { "ingredientName": "Ectoplasmic Resin", "amount": 4, "unit": "fl. oz" }
+        {
+          "ingredientName": "Abyssal Pearl Dust",
+          "amount": 6,
+          "unit": "drams"
+        },
+        {
+          "ingredientName": "Ectoplasmic Resin",
+          "amount": 4,
+          "unit": "fl. oz"
+        }
       ]
     }
   ],
   "anomalies": [
+    {
+      "_id": "anom-1793487652381",
+      "id": "anom-1793487652381",
+      "title": "Unusual Consumption Surge: Astral Nether-Bloom",
+      "ingredient": "prod-1793487652364",
+      "ingredientId": "prod-1793487652364",
+      "ingredientName": "Astral Nether-Bloom",
+      "type": "CONSUMPTION_SPIKE",
+      "anomalyType": "CONSUMPTION_SPIKE",
+      "severity": "CRITICAL",
+      "zScore": 3.61,
+      "observedValue": 40,
+      "expectedValue": 2.67,
+      "unit": "stems",
+      "description": "",
+      "explanation": "Statistical consumption spike detected: observed 40 stems vs expected baseline mean of 2.7 stems (Z-Score: +3.61σ). Consumption is 1500% of typical velocity.",
+      "recommendedAction": "Verify ledger dispensation transactions for large unannounced batches or phantom leaks.",
+      "status": "RESOLVED",
+      "createdAt": "2026-10-31T23:00:52.381Z",
+      "detectedAt": "2026-10-31T23:00:52.381Z",
+      "resolvedAt": "2026-11-01T03:10:15.531Z",
+      "resolutionNote": "Issue inspected and marked resolved by store manager."
+    },
+    {
+      "_id": "anom-1793487652381",
+      "id": "anom-1793487652381",
+      "title": "Unusual Consumption Surge: Starlight Nectar",
+      "ingredient": "ing-8",
+      "ingredientId": "ing-8",
+      "ingredientName": "Starlight Nectar",
+      "type": "CONSUMPTION_SPIKE",
+      "anomalyType": "CONSUMPTION_SPIKE",
+      "severity": "CRITICAL",
+      "zScore": 3.61,
+      "observedValue": 4,
+      "expectedValue": 0.27,
+      "unit": "fl. oz",
+      "description": "",
+      "explanation": "Statistical consumption spike detected: observed 4 fl. oz vs expected baseline mean of 0.3 fl. oz (Z-Score: +3.61σ). Consumption is 1500% of typical velocity.",
+      "recommendedAction": "Verify ledger dispensation transactions for large unannounced batches or phantom leaks.",
+      "status": "ACTIVE",
+      "createdAt": "2026-10-31T23:00:52.381Z",
+      "detectedAt": "2026-10-31T23:00:52.381Z"
+    },
+    {
+      "_id": "anom-1793487652380",
+      "id": "anom-1793487652380",
+      "title": "Unusual Consumption Surge: Moonlit Dewdrops",
+      "ingredient": "ing-2",
+      "ingredientId": "ing-2",
+      "ingredientName": "Moonlit Dewdrops",
+      "type": "CONSUMPTION_SPIKE",
+      "anomalyType": "CONSUMPTION_SPIKE",
+      "severity": "CRITICAL",
+      "zScore": 3.61,
+      "observedValue": 8,
+      "expectedValue": 0.53,
+      "unit": "fl. oz",
+      "description": "",
+      "explanation": "Statistical consumption spike detected: observed 8 fl. oz vs expected baseline mean of 0.5 fl. oz (Z-Score: +3.61σ). Consumption is 1500% of typical velocity.",
+      "recommendedAction": "Verify ledger dispensation transactions for large unannounced batches or phantom leaks.",
+      "status": "RESOLVED",
+      "createdAt": "2026-10-31T23:00:52.380Z",
+      "detectedAt": "2026-10-31T23:00:52.380Z",
+      "resolvedAt": "2026-11-01T00:03:04.281Z",
+      "resolutionNote": "Issue inspected and marked resolved by store manager."
+    },
     {
       "id": "anom-1",
       "title": "Unusual Drop in Ectoplasmic Resin",
@@ -239,8 +453,10 @@
       "detectedAt": "2026-10-31T21:05:00Z",
       "description": "Storage Room B seal issue suspected. Depletion rate is 3.8x higher than recorded recipe sales.",
       "anomalyType": "Unexpected Loss / Leak",
-      "status": "ACTIVE",
-      "recommendedAction": "Inspect container seal in Storage Room B and order restock immediately."
+      "status": "RESOLVED",
+      "recommendedAction": "Inspect container seal in Storage Room B and order restock immediately.",
+      "resolvedAt": "2026-11-01T00:03:06.466Z",
+      "resolutionNote": "Issue inspected and marked resolved by store manager."
     },
     {
       "id": "anom-2",
@@ -251,8 +467,10 @@
       "detectedAt": "2026-10-31T19:30:00Z",
       "description": "Current stock is 42 drams, below the safe minimum threshold of 50 drams. Supplier delivery is slightly delayed.",
       "anomalyType": "Stockout Risk",
-      "status": "ACTIVE",
-      "recommendedAction": "Request expedited delivery from supplier or reserve remaining powder for high-margin orders."
+      "status": "RESOLVED",
+      "recommendedAction": "Request expedited delivery from supplier or reserve remaining powder for high-margin orders.",
+      "resolvedAt": "2026-11-01T00:03:07.682Z",
+      "resolutionNote": "Issue inspected and marked resolved by store manager."
     },
     {
       "id": "anom-3",
@@ -273,12 +491,16 @@
     "curseLevel": "Peak Festival Demand",
     "multiplier": 1.75,
     "description": "During the Halloween full moon period, customer demand increases by +75% across popular ingredients.",
-    "affectedIngredients": ["Dragon Scale Powder", "Ectoplasmic Resin", "Phoenix Feather Ash"],
+    "affectedIngredients": [
+      "Dragon Scale Powder",
+      "Ectoplasmic Resin",
+      "Phoenix Feather Ash"
+    ],
     "wardingStrength": "64%",
     "spoilageRate": "+32%"
   },
   "settings": {
-    "shopName": "SPELLSTOCK Imperial Sanctum",
+    "shopName": "Brew Before Empty Apothecary Sanctum",
     "alchemistInCharge": "Grand Magister Cynthia",
     "currencySymbol": "⟡ ARC",
     "lowStockWarningThreshold": 25,
@@ -287,5 +509,103 @@
     "soundEffectsEnabled": true,
     "hapticRunes": true,
     "autoWardingDefense": false
-  }
+  },
+  "stockMovements": [
+    {
+      "_id": "mov-1793487652382",
+      "id": "mov-1793487652382",
+      "productId": "prod-1793487652364",
+      "ingredient": "prod-1793487652364",
+      "ingredientName": "Astral Nether-Bloom",
+      "movementType": "MANUAL_ADJUSTMENT",
+      "type": "MANUAL_ADJUSTMENT",
+      "quantityChange": -40,
+      "unit": "stems",
+      "previousStock": 40,
+      "newStock": 0,
+      "reason": "Reagent banished from Sanctum records",
+      "referenceId": "",
+      "timestamp": "2026-10-31T23:00:52.382Z"
+    },
+    {
+      "_id": "mov-1793487652367",
+      "id": "mov-1793487652367",
+      "productId": "ing-1",
+      "ingredient": "ing-1",
+      "ingredientName": "Dragon Scale Powder",
+      "movementType": "SALE_CONSUMPTION",
+      "type": "SALE_CONSUMPTION",
+      "quantityChange": -2,
+      "unit": "drams",
+      "previousStock": 42,
+      "newStock": 40,
+      "reason": "Sold 2x Elixir of Astral Clarity",
+      "referenceId": "TXN-9022-2366",
+      "timestamp": "2026-10-31T23:00:52.367Z"
+    },
+    {
+      "_id": "mov-1793487652366",
+      "id": "mov-1793487652366",
+      "productId": "ing-8",
+      "ingredient": "ing-8",
+      "ingredientName": "Starlight Nectar",
+      "movementType": "SALE_CONSUMPTION",
+      "type": "SALE_CONSUMPTION",
+      "quantityChange": -4,
+      "unit": "fl. oz",
+      "previousStock": 140,
+      "newStock": 136,
+      "reason": "Sold 2x Elixir of Astral Clarity",
+      "referenceId": "TXN-9022-2366",
+      "timestamp": "2026-10-31T23:00:52.366Z"
+    },
+    {
+      "_id": "mov-1793487652366",
+      "id": "mov-1793487652366",
+      "productId": "ing-2",
+      "ingredient": "ing-2",
+      "ingredientName": "Moonlit Dewdrops",
+      "movementType": "SALE_CONSUMPTION",
+      "type": "SALE_CONSUMPTION",
+      "quantityChange": -8,
+      "unit": "fl. oz",
+      "previousStock": 180,
+      "newStock": 172,
+      "reason": "Sold 2x Elixir of Astral Clarity",
+      "referenceId": "TXN-9022-2366",
+      "timestamp": "2026-10-31T23:00:52.366Z"
+    },
+    {
+      "_id": "mov-1793487652366",
+      "id": "mov-1793487652366",
+      "productId": "prod-1793487652364",
+      "ingredient": "prod-1793487652364",
+      "ingredientName": "Astral Nether-Bloom",
+      "movementType": "RESTOCK",
+      "type": "RESTOCK",
+      "quantityChange": 15,
+      "unit": "stems",
+      "previousStock": 25,
+      "newStock": 40,
+      "reason": "Received apprentice harvest",
+      "referenceId": "",
+      "timestamp": "2026-10-31T23:00:52.366Z"
+    },
+    {
+      "_id": "mov-1793487652365",
+      "id": "mov-1793487652365",
+      "productId": "prod-1793487652364",
+      "ingredient": "prod-1793487652364",
+      "ingredientName": "Astral Nether-Bloom",
+      "movementType": "INITIAL_INVENTORY",
+      "type": "INITIAL_INVENTORY",
+      "quantityChange": 25,
+      "unit": "stems",
+      "previousStock": 0,
+      "newStock": 25,
+      "reason": "Initial vault cataloging",
+      "referenceId": "",
+      "timestamp": "2026-10-31T23:00:52.365Z"
+    }
+  ]
 }

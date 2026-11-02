@@ -7,19 +7,23 @@
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"magenta,cyan\" \"npm run server\" \"npm run client\"",
     "client": "vite",
     "server": "node server.js",
+    "seed:supabase": "node scripts/seed-supabase.js",
     "test": "node test-engine.js",
     "test:http": "node test-api-http.js",
+    "mobile:start": "npm --prefix mobile start",
+    "mobile:android": "npm --prefix mobile run android",
+    "mobile:typecheck": "npm --prefix mobile run typecheck",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "axios": "^1.7.7",
     "canvas-confetti": "^1.9.3",
     "cors": "^2.8.5",
     "dotenv": "^18.0.9",
     "express": "^4.21.1",
     "lucide-react": "^0.453.0",
-    "mongoose": "^9.11.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "recharts": "^2.13.0"
@@ -28,7 +32,6 @@
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
     "concurrently": "^9.0.1",
-    "mongodb-memory-server": "^11.3.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "vite": "^5.4.10"

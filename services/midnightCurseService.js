@@ -45,7 +45,7 @@ export class MidnightCurseService {
 
     for (const event of activeEvents) {
       const affectsSpecific = event.affectedIngredients.some(
-        (ing) => ing._id.toString() === ingredientId.toString()
+        (ing) => (ing._id || ing.id || ing)?.toString() === ingredientId?.toString()
       );
       const affectsCategory = category && event.affectedCategories?.includes(category);
       const affectsAll = (!event.affectedIngredients || event.affectedIngredients.length === 0) &&

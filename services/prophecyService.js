@@ -28,7 +28,7 @@ export class ProphecyService {
     }
 
     for (const mov of movements) {
-      const dateKey = mov.timestamp.toISOString().split('T')[0];
+      const dateKey = new Date(mov.timestamp || Date.now()).toISOString().split('T')[0];
       if (dailyMap[dateKey] !== undefined) {
         dailyMap[dateKey] += Math.abs(mov.quantityChange);
       } else {

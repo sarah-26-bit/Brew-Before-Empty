@@ -3,6 +3,7 @@ import { api } from '../../services/api';
 import Modal from '../common/Modal';
 import Button from '../common/Button';
 import Badge from '../common/Badge';
+import { getPotionArtwork } from '../../assets/illustrations/potions';
 import { useInventory } from '../../context/InventoryContext';
 import { FlaskConical, AlertCircle, ArrowRight, Sparkles } from 'lucide-react';
 
@@ -102,17 +103,30 @@ export default function RecordSaleModal({ isOpen, onClose }) {
 
         {/* Selected Potion Recipe Breakdown */}
         {selectedPotion && (
-          <div className="p-3.5 rounded-xl bg-midnight-card/80 border border-midnight-border/70 text-xs space-y-2">
-            <div className="flex items-center justify-between text-moonlight font-medium">
-              <span className="flex items-center gap-1.5">
-                <FlaskConical className="w-3.5 h-3.5 text-potion" />
-                Ingredients Required for this Order:
-              </span>
-              <Badge variant={selectedPotion.maxCraftable >= quantity ? 'enchanted' : 'curse'} size="sm">
-                {selectedPotion.maxCraftable >= quantity ? 'In Stock' : 'Not Enough Stock'}
-              </Badge>
+          <div className="p-3.5 rounded-xl bg-midnight-card/80 border border-midnight-border/70 text-xs space-y-3">
+            <div className="flex items-center gap-3.5">
+              <div className="w-14 h-14 rounded-xl bg-midnight border border-arcane/20 flex items-center justify-center p-1 shrink-0">
+                {getPotionArtwork(selectedPotion.name, 'w-12 h-12')}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-serif font-bold text-moonlight text-sm truncate">
+                    {selectedPotion.name}
+                  </h4>
+                  <Badge variant={selectedPotion.maxCraftable >= quantity ? 'enchanted' : 'curse'} size="sm">
+                    {selectedPotion.maxCraftable >= quantity ? `${selectedPotion.maxCraftable} craftable` : 'Not Enough Stock'}
+                  </Badge>
+                </div>
+                <p className="text-[11px] text-moonlight-muted mt-0.5">
+                  {selectedPotion.description || 'Premium alchemical brew.'}
+                </p>
+              </div>
             </div>
-            <div className="space-y-1">
+
+            <div className="border-t border-midnight-border/60 pt-2 space-y-1">
+              <span className="text-[10px] font-mono uppercase tracking-wider text-moonlight-muted block">
+                Required Ingredients:
+              </span>
               {selectedPotion.recipe.map((rec, i) => (
                 <div key={i} className="flex items-center justify-between text-moonlight-muted">
                   <span>{rec.ingredientName}</span>

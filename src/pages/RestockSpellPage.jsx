@@ -8,6 +8,7 @@ import Button from '../components/common/Button';
 import LoadingSkeleton from '../components/common/LoadingSkeleton';
 import ErrorBanner from '../components/common/ErrorBanner';
 import EmptyState from '../components/common/EmptyState';
+import { getIngredientArtwork } from '../assets/illustrations/ingredients';
 import { useInventory } from '../context/InventoryContext';
 import {
   Wand2,
@@ -285,12 +286,19 @@ export default function RestockSpellPage() {
                         />
                       </td>
 
-                      {/* Name & Supplier */}
+                      {/* Name & Supplier with Artwork */}
                       <td className="py-3.5 font-sans font-medium text-moonlight">
-                        <span className="font-semibold text-sm">{item.name}</span>
-                        <span className="block text-[10px] text-moonlight-muted font-mono">
-                          Supplier: {item.supplier}
-                        </span>
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg bg-midnight border border-midnight-border flex items-center justify-center p-1 shrink-0">
+                            {getIngredientArtwork(item.name, item.category, 'w-8 h-8', item.visualArchetype)}
+                          </div>
+                          <div>
+                            <span className="font-semibold text-sm">{item.name}</span>
+                            <span className="block text-[10px] text-moonlight-muted font-mono">
+                              Supplier: {item.supplier}
+                            </span>
+                          </div>
+                        </div>
                       </td>
 
                       {/* Current vs Min */}

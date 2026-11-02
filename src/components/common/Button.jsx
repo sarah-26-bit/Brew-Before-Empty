@@ -16,13 +16,15 @@ export default function Button({
   const baseStyles = 'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-midnight disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]';
 
   const variants = {
-    primary: 'bg-gradient-to-r from-arcane to-purple-600 hover:from-arcane-light hover:to-arcane text-white shadow-arcane-sm hover:shadow-arcane-md focus:ring-arcane border border-purple-400/30',
-    potion: 'bg-gradient-to-r from-potion to-amber-600 hover:from-potion-light hover:to-potion text-white shadow-potion-glow focus:ring-potion border border-orange-400/30',
-    curse: 'bg-gradient-to-r from-curse to-rose-700 hover:from-curse-light hover:to-curse text-white shadow-curse-glow focus:ring-curse border border-rose-400/30',
-    enchanted: 'bg-gradient-to-r from-enchanted to-emerald-600 hover:from-enchanted-light hover:to-enchanted text-midnight-900 font-semibold shadow-enchanted-glow focus:ring-enchanted border border-emerald-400/30',
-    secondary: 'bg-midnight-surface hover:bg-midnight-card text-moonlight border border-midnight-border hover:border-arcane/40 focus:ring-arcane',
-    ghost: 'bg-transparent hover:bg-midnight-surface/60 text-moonlight-muted hover:text-moonlight focus:ring-arcane',
-    danger: 'bg-curse/20 hover:bg-curse/30 text-curse-light border border-curse/40 focus:ring-curse',
+    primary: 'bg-gradient-to-r from-emerald to-emerald-dark hover:from-emerald-light hover:to-emerald text-white shadow-emerald-sm hover:shadow-emerald-md focus:ring-emerald border border-emerald-light/40 font-semibold',
+    gold: 'bg-gradient-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold text-midnight-900 shadow-gold-sm hover:shadow-gold-md focus:ring-gold border border-gold-light/40 font-semibold',
+    potion: 'bg-gradient-to-r from-gold to-gold-dark hover:from-gold-light hover:to-gold text-midnight-900 shadow-gold-sm hover:shadow-gold-md focus:ring-gold border border-gold-light/40 font-semibold',
+    amber: 'bg-gradient-to-r from-amber to-amber-dark hover:from-amber-light hover:to-amber text-midnight-900 font-semibold shadow-amber-glow focus:ring-amber border border-amber/40',
+    curse: 'bg-gradient-to-r from-critical to-critical-dark hover:from-critical-light hover:to-critical text-white shadow-critical-glow focus:ring-critical border border-critical/40 font-semibold',
+    danger: 'bg-critical/20 hover:bg-critical/30 text-critical-light border border-critical/40 focus:ring-critical',
+    enchanted: 'bg-gradient-to-r from-emerald to-emerald-dark hover:from-emerald-light hover:to-emerald text-white shadow-emerald-sm focus:ring-emerald border border-emerald-light/40 font-semibold',
+    secondary: 'bg-midnight-surface hover:bg-midnight-card text-ivory border border-forest-border hover:border-gold/50 focus:ring-gold',
+    ghost: 'bg-transparent hover:bg-midnight-surface/70 text-ivory-muted hover:text-ivory focus:ring-emerald',
   };
 
   const sizes = {
@@ -48,4 +50,3 @@ export default function Button({
     </button>
   );
 }
-

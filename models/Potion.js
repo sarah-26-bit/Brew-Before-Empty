@@ -1,65 +1,43 @@
-import mongoose from 'mongoose';
+import { getDatabase } from '../server/db.js';
+import { QueryPromise } from './QueryPromise.js';
 
-const recipeItemSchema = new mongoose.Schema(
-  {
-    ingredient: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Ingredient',
-      required: true,
-    },
-    ingredientName: {
-      type: String,
-      required: true,
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      min: [0.01, 'Quantity must be greater than zero'],
-    },
-    unit: {
-      type: String,
-      required: true,
-    },
-  },
-  { _id: false }
-);
-
-const potionSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, 'Potion name is required'],
-      trim: true,
-      unique: true,
-      index: true,
-    },
-    tier: {
-      type: String,
-      default: 'Tier II Adept',
-    },
-    price: {
-      type: Number,
-      required: [true, 'Price is required'],
-      min: [0, 'Price cannot be negative'],
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    recipe: {
-      type: [recipeItemSchema],
-      validate: {
-        validator: function (v) {
-          return Array.isArray(v) && v.length > 0;
-        },
-        message: 'A potion recipe must include at least one ingredient',
-      },
-    },
-  },
-  {
-    timestamps: true,
+export class Potion {
+  constructor(data = {}) {
+    this._id = data._id || data.id || `pot-${Date.now()}`;
+    this.id = this._id;
+    this.name = data.name || '';
+    this.tier = data.tier || 'Tier II Adept';
+    this.price = Number(data.price || 50);
+    this.description = data.description || '';
+    this.recipe = (data.recipe || []).map(r => ({
+      ...r,
+      ingredient: r.ingredient || r.productId || r.ingredientId || r.id
+    }));
   }
-);
 
-export const Potion = mongoose.model('Potion', potionSchema);
+  static find(query = {}) {
+    return new QueryPromise(async () => {
+      const db = getDatabase();
+      return (db.potions || []).map(p => new Potion(p));
+    });
+  }
 
+  static async findById(id) {
+    const db = getDatabase();
+    const raw = (db.potions || []).find(p => (p.id === id || p._id === id));
+    return raw ? new Potion(raw) : null;
+  }
+
+  static async findOne(query = {}) {
+    const db = getDatabase();
+    if (query.name) {
+      const match = (db.potions || []).find(p => 
+        query.name.test ? query.name.test(p.name) : p.name.toLowerCase() === String(query.name).toLowerCase()
+      );
+      return match ? new Potion(match) : null;
+    }
+    return null;
+  }
+}
+
+export default Potion;

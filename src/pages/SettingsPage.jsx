@@ -20,7 +20,7 @@ import {
 export default function SettingsPage() {
   const { showToast, triggerGlobalRefresh, refreshKey } = useInventory();
   const [settings, setSettings] = useState({
-    shopName: 'SPELLSTOCK Imperial Sanctum',
+    shopName: 'Brew Before Empty Apothecary Sanctum',
     alchemistInCharge: 'Grand Magister Cynthia',
     currencySymbol: '⟡ ARC',
     lowStockWarningThreshold: 25,

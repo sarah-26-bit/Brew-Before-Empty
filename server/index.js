@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import { getDatabase, saveDatabase, resetDatabase } from './db.js';
+import { getDatabase, saveDatabase, resetDatabase, initSupabaseData } from './db.js';
+import { ChatbotService } from '../services/chatbotService.js';
+import { isSupabaseConfigured } from '../config/supabase.js';
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -41,7 +43,7 @@ function enrichIngredient(ing, curseMultiplier = 1.0) {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
-    system: 'SPELLSTOCK Core Alchemical Engine',
+    system: 'Brew Before Empty Core Alchemical Engine',
     timestamp: new Date().toISOString(),
     uptime: process.uptime()
   });
@@ -725,8 +727,89 @@ app.post('/api/settings/reset', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
+// ----------------- SPELLSTOCK INTELLIGENCE CHATBOT -----------------
+app.post('/api/chat', async (req, res) => {
+  try {
+    const { message, history } = req.body;
+    if (!message || typeof message !== 'string' || !message.trim()) {
+      return res.status(400).json({ error: 'Message is required and must be non-empty.' });
+    }
+
+    const db = getDatabase();
+    const curseMult = db.curseState?.active ? (db.curseState.multiplier || 1.75) : 1.0;
+    const ingredients = db.ingredients.map(ing => enrichIngredient(ing, curseMult));
+
+    // Calculate restock recommendations
+    const restockRecommendations = ingredients.map(ing => {
+      const safeStock = ing.minThreshold * 2;
+      const leadTimeUsage = ing.effectiveDailyConsumption * ing.leadTimeDays;
+      const targetStock = Math.ceil(safeStock + leadTimeUsage);
+      const orderQty = Math.max(0, targetStock - ing.currentStock);
+      const estimatedCost = Number((orderQty * ing.costPerUnit).toFixed(2));
+
+      let urgency = 'ROUTINE';
+      if (ing.currentStock <= 0 || ing.stockStatus === 'CRITICAL') {
+        urgency = 'CRITICAL';
+      } else if (ing.isLowStock) {
+        urgency = 'HIGH';
+      } else if (orderQty > 0 && ing.daysRemaining <= 7) {
+        urgency = 'MEDIUM';
+      }
+
+      return {
+        id: ing.id,
+        name: ing.name,
+        category: ing.category,
+        currentStock: ing.currentStock,
+        minThreshold: ing.minThreshold,
+        unit: ing.unit,
+        costPerUnit: ing.costPerUnit,
+        supplier: ing.supplier,
+        suggestedRestockQty: orderQty,
+        estimatedCost,
+        urgency,
+        leadTimeDays: ing.leadTimeDays,
+        daysRemaining: ing.daysRemaining
+      };
+    }).filter(item => item.suggestedRestockQty > 0);
+
+    const inventoryData = {
+      ingredients,
+      sales: db.sales || [],
+      anomalies: db.anomalies || [],
+      restockRecommendations,
+      curseState: db.curseState || {},
+      overview: {
+        totalStockItems: ingredients.reduce((sum, ing) => sum + ing.currentStock, 0),
+        totalInventoryValue: ingredients.reduce((sum, ing) => sum + (ing.currentStock * ing.costPerUnit), 0),
+        lowStockCount: ingredients.filter(ing => ing.isLowStock).length,
+        criticalStockCount: ingredients.filter(ing => ing.stockStatus === 'CRITICAL' || ing.stockStatus === 'OUT_OF_STOCK').length,
+        activeAnomaliesCount: (db.anomalies || []).filter(a => a.status === 'ACTIVE').length,
+        totalSalesRevenue: (db.sales || []).reduce((sum, s) => sum + s.totalGold, 0)
+      }
+    };
+
+    const result = await ChatbotService.processMessage({
+      message,
+      history,
+      inventoryData
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.error('SPELLSTOCK Chatbot Error:', error);
+    res.status(500).json({ error: error.message || 'Failed to process chat query' });
+  }
+});
+
+app.listen(PORT, '0.0.0.0', async () => {
   console.log(`✨ SPELLSTOCK Backend running on http://localhost:${PORT}`);
   console.log(`🔮 Alchemical endpoints active and bound to astral plane.`);
+  if (isSupabaseConfigured()) {
+    console.log(`⚡ Supabase PostgreSQL connection detected. Synchronizing ledger...`);
+    await initSupabaseData();
+  } else {
+    console.log(`📦 Supabase mode ready. (Set SUPABASE_URL and SUPABASE_ANON_KEY in .env to connect remote DB)`);
+  }
 });
 

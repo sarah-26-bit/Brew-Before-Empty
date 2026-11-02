@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { InventoryProvider, useInventory } from './context/InventoryContext';
+import AuthPage from './pages/AuthPage';
+import { AICompanionOrb } from './assets/illustrations/scenes';
 import Sidebar from './components/layout/Sidebar';
 import Header from './components/layout/Header';
 import NotificationToast from './components/layout/NotificationToast';
 import RecordSaleModal from './components/modals/RecordSaleModal';
+import SpellstockAIAssistant from './components/ai/SpellstockAIAssistant';
 
 // Pages
 import OverviewPage from './pages/OverviewPage';
 import PotionPantryPage from './pages/PotionPantryPage';
 import SalesTransactionsPage from './pages/SalesTransactionsPage';
 import ProphecyAIPage from './pages/ProphecyAIPage';
+import IntelligenceCentrePage from './pages/IntelligenceCentrePage';
 import RestockSpellPage from './pages/RestockSpellPage';
 import StrangeHappeningsPage from './pages/StrangeHappeningsPage';
 import CrystalBallAnalyticsPage from './pages/CrystalBallAnalyticsPage';
@@ -45,6 +50,8 @@ function DashboardContent() {
         );
       case 'prophecy':
         return <ProphecyAIPage onOpenRestock={handleOpenRestock} />;
+      case 'intelligence':
+        return <IntelligenceCentrePage />;
       case 'restock':
         return <RestockSpellPage />;
       case 'happenings':
@@ -86,17 +93,33 @@ function DashboardContent() {
         </main>
       </div>
 
-      {/* Global Modals & Toast */}
+      {/* Global Modals, Toast & Floating AI Assistant */}
       <RecordSaleModal
         isOpen={recordSaleModalOpen}
         onClose={() => setRecordSaleModalOpen(false)}
       />
       <NotificationToast />
+      <SpellstockAIAssistant />
     </div>
   );
 }
 
-export default function App() {
+function MainApp() {
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-midnight flex flex-col items-center justify-center p-4">
+        <AICompanionOrb className="w-12 h-12 animate-pulse mb-3" active={true} />
+        <p className="text-xs font-mono text-sage-green animate-pulse">Attuning to Sanctum ledger...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <AuthPage />;
+  }
+
   return (
     <InventoryProvider>
       <DashboardContent />
@@ -104,3 +127,10 @@ export default function App() {
   );
 }
 
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
+  );
+}

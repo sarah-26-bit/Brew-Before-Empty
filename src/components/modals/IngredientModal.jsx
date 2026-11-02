@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../../services/api';
 import Modal from '../common/Modal';
 import Button from '../common/Button';
+import Badge from '../common/Badge';
+import { getIngredientArtwork, detectArchetype } from '../../assets/illustrations/ingredients';
 import { useInventory } from '../../context/InventoryContext';
-import { Sparkles, AlertCircle } from 'lucide-react';
+import { Sparkles, AlertCircle, Palette } from 'lucide-react';
 
 const CATEGORIES = [
   'Mineral & Scales',
@@ -21,6 +23,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
   const [formData, setFormData] = useState({
     name: '',
     category: 'Mineral & Scales',
+    visualArchetype: 'auto',
     currentStock: 50,
     unit: 'drams',
     minThreshold: 30,
@@ -40,6 +43,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
       setFormData({
         name: ingredientToEdit.name || '',
         category: ingredientToEdit.category || 'Mineral & Scales',
+        visualArchetype: ingredientToEdit.visualArchetype || 'auto',
         currentStock: ingredientToEdit.currentStock ?? 50,
         unit: ingredientToEdit.unit || 'drams',
         minThreshold: ingredientToEdit.minThreshold ?? 30,
@@ -54,6 +58,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
       setFormData({
         name: '',
         category: 'Mineral & Scales',
+        visualArchetype: 'auto',
         currentStock: 50,
         unit: 'drams',
         minThreshold: 30,
@@ -92,7 +97,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
         showToast(`Ingredient "${formData.name}" updated successfully!`, 'success');
       } else {
         await api.addIngredient(formData);
-        showToast(`Ingredient "${formData.name}" added to inventory!`, 'success');
+        showToast(`Ingredient "${formData.name}" added with custom generated artwork!`, 'success');
       }
       triggerGlobalRefresh();
       onClose();
@@ -104,12 +109,16 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
     }
   };
 
+  const currentArchetype = formData.visualArchetype && formData.visualArchetype !== 'auto'
+    ? formData.visualArchetype
+    : detectArchetype(formData.name || 'New Ingredient', formData.category);
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       title={ingredientToEdit ? 'Edit Ingredient' : 'Add New Ingredient'}
-      subtitle={ingredientToEdit ? `Updating stock levels and details for ${ingredientToEdit.name}` : 'Enter the ingredient details below to add it to your pantry'}
+      subtitle={ingredientToEdit ? `Updating stock levels and details for ${ingredientToEdit.name}` : 'Enter the ingredient details below to generate its unique artwork and add it to your inventory'}
       maxWidth="max-w-2xl"
     >
       {error && (
@@ -120,7 +129,36 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name & Category */}
+        
+        {/* LIVE GENERATED VISUAL PREVIEW CARD */}
+        <div className="p-4 rounded-2xl bg-midnight border border-arcane/40 flex items-center gap-4 shadow-inner relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-arcane/10 rounded-full blur-2xl pointer-events-none" />
+
+          {/* Real-time artwork preview */}
+          <div className="w-16 h-16 rounded-xl bg-midnight-card border border-arcane/50 flex items-center justify-center p-1.5 shrink-0 shadow-lg">
+            {getIngredientArtwork(formData.name || 'New Item', formData.category, 'w-14 h-14', formData.visualArchetype)}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-arcane-light font-bold flex items-center gap-1">
+                <Sparkles className="w-3 h-3 text-arcane-light animate-spin" style={{ animationDuration: '8s' }} />
+                Unique Generated Artwork
+              </span>
+              <Badge variant="arcane" size="sm">
+                {currentArchetype.toUpperCase()}
+              </Badge>
+            </div>
+            <h4 className="font-serif font-bold text-moonlight text-sm truncate mt-0.5">
+              {formData.name || 'Name your ingredient to see its custom illustration'}
+            </h4>
+            <p className="text-[11px] text-moonlight-muted mt-0.5">
+              Unique deterministic illustration generated specifically for this item's identity.
+            </p>
+          </div>
+        </div>
+
+        {/* Name & Visual Archetype */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
@@ -132,10 +170,39 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
               required
               value={formData.name}
               onChange={handleChange}
-              placeholder="e.g. Moonlit Dewdrops"
+              placeholder="e.g. Silver Lotus, Obsidian Shard"
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
             />
           </div>
+
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5 flex items-center justify-between">
+              <span>Visual Illustration Style</span>
+              <span className="text-[10px] text-arcane-light lowercase">procedural SVG</span>
+            </label>
+            <select
+              name="visualArchetype"
+              value={formData.visualArchetype}
+              onChange={handleChange}
+              className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
+            >
+              <option value="auto">Auto-Detect from Name (Recommended)</option>
+              <option value="flower">Botanical Flower / Blossom</option>
+              <option value="crystal">Crystalline Gem / Mineral</option>
+              <option value="flask">Apothecary Flask / Fluid</option>
+              <option value="root">Sacred Gnarled Root</option>
+              <option value="mushroom">Bioluminescent Mushroom</option>
+              <option value="creature">Mythic Creature Relic / Scale</option>
+              <option value="celestial">Celestial Starburst / Astral</option>
+              <option value="dust">Essence Urn / Incense Dust</option>
+              <option value="herb">Botanical Herb Sprig</option>
+              <option value="berry">Botanical Berry Cluster</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Category & Item Rarity */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
               Category
@@ -149,6 +216,24 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>
                   {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
+              Item Rarity
+            </label>
+            <select
+              name="rarity"
+              value={formData.rarity}
+              onChange={handleChange}
+              className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3.5 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
+            >
+              {RARITIES.map((r) => (
+                <option key={r} value={r}>
+                  {r}
                 </option>
               ))}
             </select>
@@ -243,8 +328,8 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
           </div>
         </div>
 
-        {/* Supplier, Purity, Rarity */}
-        <div className="grid grid-cols-3 gap-3">
+        {/* Supplier & Purity */}
+        <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
               Supplier Name
@@ -270,23 +355,6 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
               className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3 py-2 text-sm text-moonlight font-mono focus:border-arcane focus:outline-none"
             />
           </div>
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-moonlight-muted mb-1.5">
-              Item Rarity
-            </label>
-            <select
-              name="rarity"
-              value={formData.rarity}
-              onChange={handleChange}
-              className="w-full bg-midnight-card border border-midnight-border rounded-xl px-3 py-2 text-sm text-moonlight focus:border-arcane focus:outline-none"
-            >
-              {RARITIES.map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
 
         {/* Action Buttons */}
@@ -301,7 +369,7 @@ export default function IngredientModal({ isOpen, onClose, ingredientToEdit = nu
             isLoading={loading}
             icon={Sparkles}
           >
-            {ingredientToEdit ? 'Save Changes' : 'Add Ingredient'}
+            {ingredientToEdit ? 'Save Changes' : 'Add Ingredient & Generate Art'}
           </Button>
         </div>
       </form>

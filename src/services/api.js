@@ -52,6 +52,9 @@ export const api = {
   getSettings: () => apiClient.get('/settings'),
   updateSettings: (data) => apiClient.put('/settings', data),
   resetDatabase: () => apiClient.post('/settings/reset'),
+
+  // SPELLSTOCK Intelligence Chatbot
+  sendChatMessage: (message, history = []) => apiClient.post('/chat', { message, history }),
 };
 
 export default apiClient;

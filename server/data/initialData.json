@@ -278,7 +278,7 @@
     "spoilageRate": "+32%"
   },
   "settings": {
-    "shopName": "SPELLSTOCK Imperial Sanctum",
+    "shopName": "Brew Before Empty Apothecary Sanctum",
     "alchemistInCharge": "Grand Magister Cynthia",
     "currencySymbol": "⟡ ARC",
     "lowStockWarningThreshold": 25,
