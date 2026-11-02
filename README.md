@@ -1,96 +1,197 @@
-# SPELLSTOCK — The Magic of Intelligent Inventory 🔮✨
-> **Predict. Prepare. Prosper.**  
+# SPELLSTOCK (Brew Before Empty) 🔮✨
+> **The Magic of Intelligent Inventory — Predict. Prepare. Prosper.**  
 > *Developed for Hack-O-Lantern 2026*
 
-SPELLSTOCK is an AI-powered magical inventory management platform designed for alchemists, enchanters, and potion guilds. It fuses deep alchemical lore with high-performance SaaS inventory forecasting, dynamic stock deduction, anomaly detection, and automated replenishment incantations.
+SPELLSTOCK is an AI-powered alchemical inventory management and predictive demand intelligence platform. Designed for both desktop workstations and mobile devices, it bridges high-performance supply-chain algorithms with rich fantasy lore. It predicts ingredient depletion, simulates seasonal demand spikes (e.g. Blood Moon Festival), tracks potion recipes with automated multi-ingredient deductions upon sales, detects anomalies (theft/leakage), and features an AI chatbot assistant.
 
 ---
 
-## 🎨 Official Brand Identity & Palette
+## 🏗️ System Architecture & Platform Overview
 
-- **Product Name**: SPELLSTOCK
+```
+                       ┌──────────────────────────────────────────────┐
+                       │           Supabase PostgreSQL /             │
+                       │           Local JSON Persistent DB           │
+                       └──────────────────────┬───────────────────────┘
+                                              │
+                                              ▼
+                       ┌──────────────────────────────────────────────┐
+                       │          Express Backend (Port 5001)         │
+                       │  - Forecast Engine (Burn Rates & Surges)     │
+                       │  - Anomaly Detector (Spikes & Leaks)         │
+                       │  - Alchemical AI Chatbot Service             │
+                       │  - Multi-ingredient Deduction Processor      │
+                       └──────────────┬────────────────┬──────────────┘
+                                      │                │
+            REST API (Vite Proxy)     │                │ REST API (10.0.2.2 / Port 5001)
+                                      ▼                ▼
+         ┌──────────────────────────────┐    ┌───────────────────────────────────┐
+         │     Web Frontend (React)     │    │     Mobile Frontend (Android)     │
+         │  • React 18 + Vite           │    │  • React Native 0.88 + Expo SDK 58│
+         │  • Tailwind CSS Dark Theme   │    │  • Expo Router (File-based Tabs)  │
+         │  • Recharts Data Visuals     │    │  • Native Alchemical Styling      │
+         │  • Lucide Icons              │    │  • TypeScript                     │
+         └──────────────────────────────┘    └───────────────────────────────────┘
+```
+
+---
+
+## 🎨 Official Brand Identity & Design System
+
+- **Product Name**: SPELLSTOCK / Brew Before Empty
 - **Tagline**: Predict. Prepare. Prosper.
-- **Brand Statement**: The Magic of Intelligent Inventory.
+- **Visual Theme**: Dark Botanical Glassmorphism
 
 | Color Token | Hex Code | Purpose |
 | :--- | :--- | :--- |
-| **Midnight** | `#100B19` | Sanctum deep space background & vault canvas |
-| **Arcane Violet** | `#8B5CF6` | Primary mystical accents, buttons & prophecies |
-| **Potion Orange** | `#FF8A32` | Energy highlights, currency values, surge states |
-| **Enchanted Green** | `#78D66B` | Plentiful stock indicators, wards & prosperity |
-| **Curse Red** | `#FF5268` | Depletion warnings, spectral anomalies, blood surges |
-| **Moonlight** | `#F3EBDD` | Elegant typography, rune readouts & crisp borders |
+| **Midnight Charcoal** | `#101713` | Deep sanctum base canvas |
+| **Deep Forest** | `#17251D` | Elevated glassmorphic card surfaces |
+| **Emerald Green** | `#237A57` / `#2FA375` | Primary action buttons, healthy stock status |
+| **Antique Gold** | `#C5A46D` | Imperial currency (`⟡ ARC`), headers, sparkles |
+| **Warning Amber** | `#E9A23B` | Low stock alerts and reorder warnings |
+| **Curse Red** | `#D65C56` | Blood Moon demand surge, critical stockouts |
+| **Warm Ivory** | `#F3F0E6` | High-contrast readable typography |
 
 ---
 
 ## ⚡ Tech Stack
 
-- **Frontend**: React 18, Vite 5, Tailwind CSS 3
-- **Data Visualization**: Recharts (Demand curves, Stock levels, Category breakdown)
-- **Icons**: Lucide React
-- **Celebration Effects**: Canvas Confetti
-- **Networking**: Axios HTTP Client with API Proxy
-- **Backend**: Node.js & Express REST API with JSON persistence & Primordial Reset
+### Web Dashboard
+- **Framework**: React 18, Vite 5, TypeScript / JSX
+- **Styling**: Tailwind CSS 3 with custom alchemical tokens, PostCSS, Autoprefixer
+- **Visualizations**: Recharts (Demand curves, stock levels, depletion countdowns)
+- **Icons & Effects**: Lucide React, Canvas Confetti
+- **HTTP Client**: Axios with Vite backend proxy
+
+### Android Mobile App (`mobile/`)
+- **Runtime**: Pure React Native 0.88 & Expo SDK 58 (No WebViews or wrappers)
+- **Navigation**: Expo Router (File-based 5-tab stack)
+- **Language**: TypeScript with end-to-end type safety
+- **Security**: `expo-secure-store` for credentials and host persistence
+- **Icons**: Expo Vector Icons (Ionicons)
+
+### Backend & Database Layer
+- **Server**: Node.js & Express REST API (`port 5001`) with CORS
+- **Database**: Supabase PostgreSQL (`@supabase/supabase-js`) with automatic local JSON fallback (`server/data/initialData.json`)
+- **Intelligence Engines**:
+  - **Predictive Demand Forecaster**: Calculates rolling daily burn rates, supplier lead-time buffers, and dynamic days-to-depletion.
+  - **Seasonal Demand Surge**: Blood Moon Festival simulator (1.75x consumption velocity multiplier).
+  - **Atomic Recipe Deductions**: Dispensing a potion verifies all required reagents and atomically decrements vault inventory in a single transaction.
+  - **Anomaly Detector**: Identifies sudden consumption spikes and phantom stock leakage with one-click warding dispel actions.
+  - **SPELLSTOCK Intelligence Chatbot**: AI conversational assistant answering inventory questions.
 
 ---
 
-## 🧭 Navigation & Modules
+## 📱 Mobile App Features (5 Native Tabs)
 
-1. **Overview** — Imperial command dashboard displaying key metrics (Total assets, Gross gold revenue, Hazard count, Anomalies), quick restock alerts, and live transaction chronologies.
-2. **Potion Pantry** — Full reagent management (*Add, update, and delete ingredients*). Real-time search, category filtering, stock availability meters, and low-stock warning triggers.
-3. **Sales & Transactions** — Dispensation ledger recording customer orders, guilds, and **automatically reflecting ingredient stock deductions** directly in the pantry registers.
-4. **Prophecy AI** — Neural demand forecasting over 14-day horizons, stockout hazard projection dates, confidence interval envelopes, and **Seasonal Demand Spikes Simulator** (Blood Moon, Witches' Eve, Solstice, Necrotic Plague).
-5. **Restock Spell** — Algorithmic replenishment generator (*Incantation of Abundant Harvest*). Multi-select selective restock, custom order sizing, unit cost evaluation, and immediate stock restoration with magical confetti celebration.
-6. **Strange Happenings** — Telemetry logging supernatural disturbances (Spectral leakage, thermal degradation, rapid stockout risks) with one-click **Warding Charm** resolution.
-7. **Crystal Ball Analytics** — Historical vs predicted demand curves, inventory turnover velocity (4.8x), stockout risk index, and asset distribution across reagent categories.
-8. **Midnight Curse** — Simulated seasonal surge engine: calibrate consumption velocity multiplier (1.0x to 3.5x), assess celestial spoilage rate, and invoke holy wards.
-9. **Settings** — Sanctum shop governance, alchemist titles, forecast horizons, automated warding toggles, and **Primordial Rejuvenation** database reset.
+1. **Home (`/(tabs)/index.tsx`)**:
+   - Grand Master's Chamber hero card with live status indicator.
+   - Active Blood Moon seasonal surge alert banner (1.75x multiplier).
+   - 4 Key Metrics: Total in Stock, Total Revenue (`⟡`), Low Stock Alerts, Unusual Activity.
+   - Automated Inventory Health Score gauge (0–100%).
+   - Alchemical Daily Objectives checklist.
+2. **Potion Pantry (`/(tabs)/inventory.tsx`)**:
+   - Real-time search by name, supplier, or category with instant chip filters.
+   - Reagent cards with 3-column stats (Current Stock, Min Threshold, Days Left).
+   - Daily burn rate and supplier delivery lead-time indicators.
+   - Inline stock steppers (`+` / `-`) for instant adjustments.
+   - Floating "+ Inscribe Reagent" action button.
+3. **Sales Ledger (`/(tabs)/sales.tsx`)**:
+   - Total treasury revenue counter and brews dispensed counter.
+   - "Record Customer Purchase" modal with live ingredient deduction calculations.
+   - Transaction cards with patron name, guild affiliation, and gold earned.
+4. **Insights Centre (`/(tabs)/insights.tsx`)**:
+   - Segmented navigation: Prophecy AI, Restock Spell, Anomalies, Curse Surge.
+   - Urgent depletion warnings and 1-tap restock dispatch.
+   - One-click anomaly resolution charms.
+5. **Sanctuary Profile & Settings (`/(tabs)/profile.tsx`)**:
+   - Alchemist profile card with title and shop credentials.
+   - Store branding parameters, currency representation (`⟡ ARC`), and prophecy horizon.
+   - Arcane Gateway API host manager (quick toggle between Android emulator `10.0.2.2:5001` and `localhost:5001`).
+   - Danger zone demo baseline reset.
+6. **Floating AI Chatbot (`FloatingAIChatbot.tsx`)**:
+   - Bottom-right glowing orb accessible across all tabs.
+   - Suggested prompts, real-time responses, and conversation management.
 
 ---
 
-## 🚀 Running the Platform
+## 🚀 Getting Started
 
-### 1. Run both Backend & Frontend concurrently
+### 1. Prerequisites
+- **Node.js** v18+ and **npm**
+- **Android Studio & SDK** (for Android Emulator / Device testing)
+
+### 2. Install Dependencies
+```bash
+# Install root (web + backend) dependencies
+npm install
+
+# Install mobile dependencies
+cd mobile && npm install && cd ..
+```
+
+### 3. Environment Configuration
+Copy the example environment file:
+```bash
+cp .env.example .env
+```
+Configure your Supabase credentials (optional; local JSON fallback is provided automatically):
+```env
+PORT=5001
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+### 4. Running the Platform
+
+#### Option A: Run Web & Backend together
 ```bash
 npm run dev
 ```
-- **Backend API**: Runs on `http://localhost:5001/api`
-- **Frontend Dashboard**: Runs on `http://localhost:5173`
+- **Backend API**: `http://localhost:5001/api`
+- **Web Dashboard**: `http://localhost:5173`
 
-### 2. Run Independently
+#### Option B: Run Services Independently
 ```bash
-# Terminal 1: Node.js Backend Server
+# Terminal 1: Backend Server
 npm run server
 
-# Terminal 2: Vite Frontend Client
+# Terminal 2: Web Dashboard
 npm run client
-```
 
-### 3. Production Build
-```bash
-npm run build
+# Terminal 3: Android Mobile App
+npm run mobile:android
 ```
 
 ---
 
 ## 🔮 API Endpoints Reference
 
-- `GET /api/overview` — Sanctum summary metrics, recent sales, and low stock warnings.
-- `GET /api/ingredients` — Catalog of reagents enriched with days remaining and stockout dates.
-- `POST /api/ingredients` — Inscribe new reagent into vault.
-- `PUT /api/ingredients/:id` — Refine reagent properties and threshold.
-- `DELETE /api/ingredients/:id` — Banish reagent from inventory.
-- `GET /api/potions` — Potion recipes and real-time brew availability.
-- `GET /api/sales` — Transaction history with auto-deduction reports.
-- `POST /api/sales` — Record dispensation and auto-deduct recipe reagents.
-- `GET /api/prophecy` — 14-day demand timeline and stockout predictions.
-- `POST /api/prophecy/simulate-spike` — Simulate seasonal demand spikes and accelerated depletion dates.
-- `GET /api/restock` — Algorithmic restock recommendations and lead times.
-- `POST /api/restock/execute` — Execute Restock Spell to restore depleted stock.
-- `GET /api/anomalies` — Strange happening anomaly alerts.
-- `POST /api/anomalies/:id/resolve` — Etch ward and resolve anomaly.
-- `GET /api/analytics` — Historical vs predicted demand datasets and category metrics.
-- `GET /api/curse` & `POST /api/curse/toggle` — Midnight Curse surge toggle & multiplier.
-- `GET /api/settings` & `PUT /api/settings` — Sanctum parameters.
-- `POST /api/settings/reset` — Restore primordial Hack-O-Lantern 2026 data.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/health` | Healthcheck and system status |
+| `GET` | `/api/overview` | Dashboard summary metrics, health score, and recent sales |
+| `GET` | `/api/ingredients` | Reagent catalog enriched with burn rates and depletion dates |
+| `POST` | `/api/ingredients` | Inscribe a new reagent into the vault |
+| `PUT` | `/api/ingredients/:id` | Update reagent properties, stock, and thresholds |
+| `DELETE` | `/api/ingredients/:id` | Banish reagent from inventory |
+| `GET` | `/api/potions` | Potion recipes and real-time brew availability |
+| `GET` | `/api/sales` | Transaction history with ingredient deduction breakdown |
+| `POST` | `/api/sales` | Record customer sale and auto-deduct required ingredients |
+| `GET` | `/api/prophecy` | 14-day demand timeline and depletion forecast |
+| `GET` | `/api/restock` | Reorder recommendations based on lead times |
+| `POST` | `/api/restock/execute` | Execute restock order and replenish vault stock |
+| `GET` | `/api/anomalies` | Detected strange happenings, spikes, and leaks |
+| `POST` | `/api/anomalies/:id/resolve`| Dispel anomaly with an inscribed ward |
+| `GET` | `/api/curse` | Current status of Blood Moon seasonal demand surge |
+| `POST` | `/api/curse/toggle` | Activate or deactivate seasonal demand multiplier |
+| `GET` | `/api/settings` | Store configuration and branding |
+| `PUT` | `/api/settings` | Update store parameters and alert preferences |
+| `POST` | `/api/settings/reset` | Restore demo baseline dataset |
+| `POST` | `/api/chat` | Query the SPELLSTOCK Intelligence assistant |
 
+---
+
+## 📄 License
+MIT © Hack-O-Lantern 2026. Crafted for Grand Magisters and Potion Stewards.
